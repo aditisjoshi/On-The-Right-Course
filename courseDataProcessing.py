@@ -46,11 +46,13 @@ def course_time(academicStatus,academicYear):
     """
     academicStatus: list denoting freshman, sophomore, junior, and senior status
     academicYear: list denoting semester based off year courses are taken
+    returns: course_time, which is a dictionary of courseNumbers being paired with
+        the semester they are taken
     """
 
     # Calculating semester
     semester = []
-    if i in len(academicStatus):
+    for i in range(len(academicStatus)):
         if academicStatus[i] in ('FF', 'TF'):
             #1.0
         if academicStatus[i]=='FR':
@@ -67,6 +69,14 @@ def course_time(academicStatus,academicYear):
             #4.0
         if academicStatus[i]=='JR' and ('SP' in academicYear[i]):
             #4.5
+
+    # Pairing course with semester
+    course_time = {}
+    for i in range(len(semester)):
+        course_time[courseNum[i]] = semester[i]
+        # course_time will always be overidden
+        # course_time = {[ENGR0000,1.0],[ENGR0000,3.0]....}
+        # does not count frequency
 
 def count_frequency(courseList):
     d = dict()
