@@ -10,6 +10,20 @@ based on major and/ or semester.
 
 import csv
 with open('course_enrollments_2002-2014spring_anonymized.csv', 'rb') as csvfile:
-    spamreader = csv.reader(csvfile, delimiter=';',)
-    for row in spamreader:
-        print ', '.join(row)
+    courseData = csv.reader(csvfile, delimiter=';',)
+    gradStatus = courseData[0]
+	gradYear = courseData[1]
+	ID = courseData[2]
+	gender = courseData[3]
+	academicStatus = courseData[4]
+	major = courseData[5] + courseData[6]
+	courseNum = courseData[7]
+	courseSect = [8]
+	courseTitle = [9] + courseData[10]
+	professor = [11]
+
+print courseTitle
+
+
+#########################################################################
+# Labelling
