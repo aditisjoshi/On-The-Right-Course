@@ -41,6 +41,33 @@ def get_data_as_lists(file_name):
 
     return courseNum
 
+
+def course_time(academicStatus,academicYear):
+    """
+    academicStatus: list denoting freshman, sophomore, junior, and senior status
+    academicYear: list denoting semester based off year courses are taken
+    """
+
+    # Calculating semester
+    semester = []
+    if i in len(academicStatus):
+        if academicStatus[i] in ('FF', 'TF'):
+            #1.0
+        if academicStatus[i]=='FR':
+            #1.5
+        if academicStatus[i]=='SO' and ('FA' in academicYear[i]):
+            #2.0
+        if academicStatus[i]=='SO' and ('SP' in academicYear[i]):
+            #2.5
+        if academicStatus[i]=='JR' and ('FA' in academicYear[i]):
+            #3.0
+        if academicStatus[i]=='JR' and ('SP' in academicYear[i]):
+            #3.5
+        if academicStatus[i]=='SR' and ('FA' in academicYear[i]):
+            #4.0
+        if academicStatus[i]=='JR' and ('SP' in academicYear[i]):
+            #4.5
+
 def count_frequency(courseList):
     d = dict()
     for item in courseList:
