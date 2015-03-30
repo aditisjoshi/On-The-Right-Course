@@ -8,3 +8,8 @@ Users will be able to filter the data so that they may visualize the informaiton
 based on major and/ or semester.
 """
 
+import csv
+with open('course_enrollments_2002-2014spring_anonymized.csv', 'rb') as csvfile:
+    spamreader = csv.reader(csvfile, delimiter=';',)
+    for row in spamreader:
+        print ', '.join(row)
