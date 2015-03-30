@@ -12,6 +12,7 @@ import csv
 
 def get_data_as_lists(file_name):
 
+    # labelling of data lists
     gradStatus = []
     gradYear = []
     ID = []
@@ -24,6 +25,7 @@ def get_data_as_lists(file_name):
     courseTitle = []
     professor = []
 
+    # opens excel file and sorts the data into the lists
     with open(file_name, 'rb') as csvfile:
         data = csv.reader(csvfile, delimiter=';',)
         for courseData in data:
@@ -33,13 +35,13 @@ def get_data_as_lists(file_name):
             academicYear.append(courseData[3])
             gender.append(courseData[4])
             academicStatus.append(courseData[5])
-            major.append(courseData[6] + courseData[7])
+            major.append(courseData[6] + courseData[7]) # includes concentration
             courseNum.append(courseData[8])
             courseSect.append(courseData[9])
-            courseTitle.append(courseData[10] + courseData[11])
+            courseTitle.append(courseData[10] + courseData[11]) # includes subtitle
             professor.append(courseData[11])
 
-    return courseNum
+    return gradStatus, gradYear, ID, academicYear, gender, academicStatus, major, courseNum, courseSect, courseTitle, professor
 
 
 def course_time(academicStatus,academicYear):
@@ -54,21 +56,21 @@ def course_time(academicStatus,academicYear):
     semester = []
     for i in range(len(academicStatus)):
         if academicStatus[i] in ('FF', 'TF'):
-            #1.0
+            semester.append(1.0)
         if academicStatus[i]=='FR':
-            #1.5
+            semester.append(1.5)
         if academicStatus[i]=='SO' and ('FA' in academicYear[i]):
-            #2.0
+            semester.append(2.0)
         if academicStatus[i]=='SO' and ('SP' in academicYear[i]):
-            #2.5
+            semester.append(2.5)
         if academicStatus[i]=='JR' and ('FA' in academicYear[i]):
-            #3.0
+            semester.append(3.0)
         if academicStatus[i]=='JR' and ('SP' in academicYear[i]):
-            #3.5
+            semester.append(3.5)
         if academicStatus[i]=='SR' and ('FA' in academicYear[i]):
-            #4.0
+            semester.append(4.0)
         if academicStatus[i]=='JR' and ('SP' in academicYear[i]):
-            #4.5
+            semester.append(4.5)
 
     # Pairing course with semester
     course_time = {}
@@ -77,6 +79,8 @@ def course_time(academicStatus,academicYear):
         # course_time will always be overidden
         # course_time = {[ENGR0000,1.0],[ENGR0000,3.0]....}
         # does not count frequency
+
+    return course_time
 
 def count_frequency(courseList):
     d = dict()
