@@ -9,21 +9,45 @@ based on major and/ or semester.
 """
 
 import csv
-with open('course_enrollments_2002-2014spring_anonymized.csv', 'rb') as csvfile:
-    courseData = csv.reader(csvfile, delimiter=';',)
-    gradStatus = courseData[0]
-	gradYear = courseData[1]
-	ID = courseData[2]
-	gender = courseData[3]
-	academicStatus = courseData[4]
-	major = courseData[5] + courseData[6]
-	courseNum = courseData[7]
-	courseSect = [8]
-	courseTitle = [9] + courseData[10]
-	professor = [11]
 
-print courseTitle
+def get_data_as_lists(file_name):
 
+    gradStatus = []
+    gradYear = []
+    ID = []
+    academicYear = []
+    gender = []
+    academicStatus = []
+    major = []
+    courseNum = []
+    courseSect = []
+    courseTitle = []
+    professor = []
 
-#########################################################################
-# Labelling
+    with open(file_name, 'rb') as csvfile:
+        data = csv.reader(csvfile, delimiter=';',)
+        for courseData in data:
+            gradStatus.append(courseData[0])
+            gradYear.append(courseData[1])
+            ID.append(courseData[2])
+            academicYear.append(courseData[3])
+            gender.append(courseData[4])
+            academicStatus.append(courseData[5])
+            major.append(courseData[6] + courseData[7])
+            courseNum.append(courseData[8])
+            courseSect.append(courseData[9])
+            courseTitle.append(courseData[10] + courseData[11])
+            professor.append(courseData[11])
+
+    return courseNum
+
+def count_frequency(courseList):
+    d = dict()
+    for item in courseList:
+        current = d.get(item,0)
+        d[item] = current + 1
+    return d
+
+if __name__ == '__main__':
+    courseNum = get_data_as_lists('course_enrollments_2002-2014spring_anonymized.csv')
+    print count_frequency(courseNum)
