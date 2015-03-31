@@ -10,6 +10,9 @@ based on major and/ or semester.
 
 import csv
 
+# Name of data file
+file_name = 'course_enrollments_2002-2014spring_anonymized.csv'
+
 def get_data_as_lists(file_name):
 
     # labelling of data lists
@@ -27,8 +30,9 @@ def get_data_as_lists(file_name):
 
     # opens excel file and sorts the data into the lists
     with open(file_name, 'rb') as csvfile:
-        data = csv.reader(csvfile, delimiter=';',)
+        data = csv.reader(csvfile, delimiter=',')
         for courseData in data:
+            print courseData[8]
             gradStatus.append(courseData[0])
             gradYear.append(courseData[1])
             ID.append(courseData[2])
@@ -43,6 +47,18 @@ def get_data_as_lists(file_name):
 
     return gradStatus, gradYear, ID, academicYear, gender, academicStatus, major, courseNum, courseSect, courseTitle, professor
 
+######################################################################### LABELS
+gradStatus = get_data_as_lists(file_name)[0]
+gradYear = get_data_as_lists(file_name)[1]
+ID = get_data_as_lists(file_name)[2]
+academicYear = get_data_as_lists(file_name)[3]
+gender = get_data_as_lists(file_name)[4]
+academicStatus = get_data_as_lists(file_name)[5]
+major = get_data_as_lists(file_name)[6]
+courseNum = get_data_as_lists(file_name)[7]
+courseSect = get_data_as_lists(file_name)[8]
+courseTitle = get_data_as_lists(file_name)[9]
+professor = get_data_as_lists(file_name)[10]
 
 def course_time(academicStatus,academicYear):
     """
@@ -90,5 +106,5 @@ def count_frequency(courseList):
     return d
 
 if __name__ == '__main__':
-    courseNum = get_data_as_lists('course_enrollments_2002-2014spring_anonymized.csv')
-    print count_frequency(courseNum)
+    
+    # print count_frequency(courseNum)
