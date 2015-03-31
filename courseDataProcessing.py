@@ -10,8 +10,12 @@ based on major and/ or semester.
 
 import csv
 
+# Name of data file
+file_name = 'course_enrollments_2002-2014spring_anonymized.csv'
+
 def get_data_as_lists(file_name):
 
+    # labelling of data lists
     gradStatus = []
     gradYear = []
     ID = []
@@ -24,8 +28,9 @@ def get_data_as_lists(file_name):
     courseTitle = []
     professor = []
 
+    # opens csv file and sorts the data into the lists
     with open(file_name, 'rb') as csvfile:
-        data = csv.reader(csvfile, delimiter=';',)
+        data = csv.reader(csvfile, delimiter=',')
         for courseData in data:
             gradStatus.append(courseData[0])
             gradYear.append(courseData[1])
@@ -33,42 +38,67 @@ def get_data_as_lists(file_name):
             academicYear.append(courseData[3])
             gender.append(courseData[4])
             academicStatus.append(courseData[5])
-            major.append(courseData[6] + courseData[7])
-            courseNum.append(courseData[8])
+            major.append(courseData[6] + courseData[7]) # includes concentration
+            courseNum.append(courseData[8]) # seems to output a ton of spaces after #
             courseSect.append(courseData[9])
-            courseTitle.append(courseData[10] + courseData[11])
+            courseTitle.append(courseData[10] + courseData[11]) # includes subtitle
             professor.append(courseData[11])
 
-    return courseNum
+    return gradStatus, gradYear, ID, academicYear, gender, academicStatus, major, courseNum, courseSect, courseTitle, professor
 
+######################################################################### LABELS
+gradStatus = get_data_as_lists(file_name)[0]
+gradYear = get_data_as_lists(file_name)[1]
+ID = get_data_as_lists(file_name)[2]
+academicYear = get_data_as_lists(file_name)[3]
+gender = get_data_as_lists(file_name)[4]
+academicStatus = get_data_as_lists(file_name)[5]
+major = get_data_as_lists(file_name)[6]
+courseNum = get_data_as_lists(file_name)[7]
+courseSect = get_data_as_lists(file_name)[8]
+courseTitle = get_data_as_lists(file_name)[9]
+professor = get_data_as_lists(file_name)[10]
 
 def course_time(academicStatus,academicYear):
     """
     academicStatus: list denoting freshman, sophomore, junior, and senior status
     academicYear: list denoting semester based off year courses are taken
+    returns: course_time, which is a dictionary of courseNumbers being paired with
+        the semester they are taken
     """
 
     # Calculating semester
     semester = []
-    if i in len(academicStatus):
+    for i in range(len(academicStatus)):
         if academicStatus[i] in ('FF', 'TF'):
-            #1.0
+            semester.append(1.0)
         if academicStatus[i]=='FR':
-            #1.5
+            semester.append(1.5)
         if academicStatus[i]=='SO' and ('FA' in academicYear[i]):
-            #2.0
+            semester.append(2.0)
         if academicStatus[i]=='SO' and ('SP' in academicYear[i]):
-            #2.5
+            semester.append(2.5)
         if academicStatus[i]=='JR' and ('FA' in academicYear[i]):
-            #3.0
+            semester.append(3.0)
         if academicStatus[i]=='JR' and ('SP' in academicYear[i]):
-            #3.5
+            semester.append(3.5)
         if academicStatus[i]=='SR' and ('FA' in academicYear[i]):
-            #4.0
+            semester.append(4.0)
         if academicStatus[i]=='JR' and ('SP' in academicYear[i]):
-            #4.5
+            semester.append(4.5)
 
-def count_frequency(courseList):
+    # Pairing course with semester
+    course_time = {}
+    for i in range(len(semester)):
+        course_time[courseNum[i]] = semester[i]
+        # course_time will always be overidden
+        # course_time = {[ENGR0000,1.0],[ENGR0000,3.0]....}
+        # does not count frequency
+        # maybe make a list of tuples (courseNum,semester)
+
+    return course_time
+
+def count_frequency_per_semester(courseList):
     d = dict()
     for item in courseList:
         current = d.get(item,0)
@@ -76,5 +106,7 @@ def count_frequency(courseList):
     return d
 
 if __name__ == '__main__':
-    courseNum = get_data_as_lists('course_enrollments_2002-2014spring_anonymized.csv')
-    print count_frequency(courseNum)
+    print course_time(academicStatus,academicYear)
+    print len(course_time(academicStatus,academicYear))
+    print len(ID)
+    # print count_frequency_per_semester(courseNum)
