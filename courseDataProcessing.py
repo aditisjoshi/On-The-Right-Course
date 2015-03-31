@@ -32,7 +32,6 @@ def get_data_as_lists(file_name):
     with open(file_name, 'rb') as csvfile:
         data = csv.reader(csvfile, delimiter=',')
         for courseData in data:
-            print courseData[8]
             gradStatus.append(courseData[0])
             gradYear.append(courseData[1])
             ID.append(courseData[2])
@@ -95,10 +94,11 @@ def course_time(academicStatus,academicYear):
         # course_time will always be overidden
         # course_time = {[ENGR0000,1.0],[ENGR0000,3.0]....}
         # does not count frequency
+        # maybe make a list of tuples (courseNum,semester)
 
     return course_time
 
-def count_frequency(courseList):
+def count_frequency_per_semester(courseList):
     d = dict()
     for item in courseList:
         current = d.get(item,0)
@@ -107,4 +107,6 @@ def count_frequency(courseList):
 
 if __name__ == '__main__':
     print course_time(academicStatus,academicYear)
-    # print count_frequency(courseNum)
+    print len(course_time(academicStatus,academicYear))
+    print len(ID)
+    # print count_frequency_per_semester(courseNum)
