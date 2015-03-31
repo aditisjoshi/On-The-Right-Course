@@ -28,7 +28,7 @@ def get_data_as_lists(file_name):
     courseTitle = []
     professor = []
 
-    # opens excel file and sorts the data into the lists
+    # opens csv file and sorts the data into the lists
     with open(file_name, 'rb') as csvfile:
         data = csv.reader(csvfile, delimiter=',')
         for courseData in data:
@@ -40,7 +40,7 @@ def get_data_as_lists(file_name):
             gender.append(courseData[4])
             academicStatus.append(courseData[5])
             major.append(courseData[6] + courseData[7]) # includes concentration
-            courseNum.append(courseData[8])
+            courseNum.append(courseData[8]) # seems to output a ton of spaces after #
             courseSect.append(courseData[9])
             courseTitle.append(courseData[10] + courseData[11]) # includes subtitle
             professor.append(courseData[11])
@@ -106,5 +106,5 @@ def count_frequency(courseList):
     return d
 
 if __name__ == '__main__':
-    
+    print course_time(academicStatus,academicYear)
     # print count_frequency(courseNum)
