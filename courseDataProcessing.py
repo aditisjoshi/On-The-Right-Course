@@ -14,6 +14,9 @@ import csv
 file_name = 'course_enrollments_2002-2014spring_anonymized.csv'
 
 def get_data_as_lists(file_name):
+    """
+    separates the data from the file into its columns, each column is a list
+    """
 
     # labelling of data lists
     gradStatus = []
@@ -46,8 +49,6 @@ def get_data_as_lists(file_name):
 
     return gradStatus, gradYear, ID, academicYear, gender, academicStatus, major, courseNum, courseSect, courseTitle, professor
 
-######################################################################### LABELS
-gradStatus, gradYear, ID, academicYear, gender, academicStatus, major, courseNum, courseSect, courseTitle, professor = get_data_as_lists(file_name)
 
 def course_time(academicStatus,academicYear):
     """
@@ -60,7 +61,7 @@ def course_time(academicStatus,academicYear):
     # Calculating semester and paring courses with semester
     course_semester_taken = []
     for i in range(len(academicStatus)):
-        if academicStatus[i] in ('FF', 'TF'):
+        if academicStatus[i] == 'TF' or academicStatus[i] == 'FF':
             course_semester_taken.append((courseNum[i],1.0))
         elif academicStatus[i]=='FR':
             course_semester_taken.append((courseNum[i],1.5))
@@ -79,7 +80,13 @@ def course_time(academicStatus,academicYear):
 
     return course_semester_taken
 
+
 def semester_dict(course_semester_taken, sem_number):
+    """ 
+    returns the courses taken in a certain semester along with their
+    frequency taken
+    """
+
     sem_courses = {}
     for element in course_semester_taken:
         if element[1] == sem_number:
@@ -89,8 +96,11 @@ def semester_dict(course_semester_taken, sem_number):
 
     return sem_courses
 
+
 if __name__ == '__main__':
-    print semester_dict(course_time(academicStatus,academicYear),1.5)
-    print len(semester_dict(course_time(academicStatus,academicYear),1.5))
+    
+    gradStatus, gradYear, ID, academicYear, gender, academicStatus, major, courseNum, courseSect, courseTitle, professor = get_data_as_lists(file_name)
+
+    print semester_dict(course_time(academicStatus,academicYear),1.0)
+    print len(semester_dict(course_time(academicStatus,academicYear),1.0))
     print len(ID)
-    # print count_frequency_per_semester(courseNum)
