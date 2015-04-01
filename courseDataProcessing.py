@@ -97,26 +97,85 @@ def semester_dict(course_semester_taken, sem_number):
             count = sem_courses.get(course,0)
             sem_courses[course] = count + 1
 
-    # sort the dictionary by most to least frequent
-    ordered_sem_courses = sorted(sem_courses, key=sem_courses.__getitem__, reverse=True)
+    # # sort the dictionary by most to least frequent
+    # ordered_freq_dict = sorted(freq_dict, key=freq_dict.__getitem__, reverse=True)
+    # # omit the boring helping words (ex. 'I', 'to', 'a', etc.)
+    # rants = ordered_freq_dict[230:250]      # stops at "after"
 
-    print ordered_sem_courses
-    return ordered_sem_courses
+    return sem_courses
 
-def plot(ordered_sem_courses):
-    data = Data([
-        Bar(
-            x = ordered_sem_courses.values(),
-            y = ordered_sem_courses.keys()
+def plot():
+    trace1 = Bar(
+        x = semester_dict(course_time(academicStatus,academicYear),1.0).values(),
+        y = semester_dict(course_time(academicStatus,academicYear),1.0).keys(),
+        name='Sem 1',
+        orientation='h'
         )
-    ])
-    plot_url = py.plot(data, filename='basic-bar')
+    trace2 = Bar(
+        x = semester_dict(course_time(academicStatus,academicYear),1.5).values(),
+        y = semester_dict(course_time(academicStatus,academicYear),1.5).keys(),
+        name='Sem 1.5',
+        orientation='h'
+        )
+    trace3 = Bar(
+        x = semester_dict(course_time(academicStatus,academicYear),2.0).values(),
+        y = semester_dict(course_time(academicStatus,academicYear),2.0).keys(),
+        name='Sem 2.0',
+        orientation='h'
+        )
+    trace4 = Bar(
+        x = semester_dict(course_time(academicStatus,academicYear),2.5).values(),
+        y = semester_dict(course_time(academicStatus,academicYear),2.5).keys(),
+        name='Sem 2.5',
+        orientation='h'
+        )
+    trace5 = Bar(
+        x = semester_dict(course_time(academicStatus,academicYear),3.0).values(),
+        y = semester_dict(course_time(academicStatus,academicYear),3.0).keys(),
+        name='Sem 3.0',
+        orientation='h'
+        )
+    trace6 = Bar(
+        x = semester_dict(course_time(academicStatus,academicYear),3.5).values(),
+        y = semester_dict(course_time(academicStatus,academicYear),3.5).keys(),
+        name='Sem 3.5',
+        orientation='h'
+        )
+    trace7 = Bar(
+        x = semester_dict(course_time(academicStatus,academicYear),4.0).values(),
+        y = semester_dict(course_time(academicStatus,academicYear),4.0).keys(),
+        name='Sem 4.0',
+        orientation='h'
+        )
+    trace8 = Bar(
+        x = semester_dict(course_time(academicStatus,academicYear),4.5).values(),
+        y = semester_dict(course_time(academicStatus,academicYear),4.5).keys(),
+        name='Sem 4.5',
+        orientation='h'
+        )
+    data = Data([trace1, trace2, trace3, trace4, trace5, trace6, trace7, trace8])
+    layout = Layout(
+        barmode='group'
+        )
+    fig = Figure(data=data, layout=layout)
+    plot_url = py.plot(fig, filename='grouped-bar')
+
+
+
+##################################################
+    # data = Data([
+    #     Bar(
+    #         x = sem_courses.keys(),
+    #         y = sem_courses.values()
+    #     )
+    # ])
+    # plot_url = py.plot(data, filename='basic-bar')
 
 if __name__ == '__main__':
     
     gradStatus, gradYear, ID, academicYear, gender, academicStatus, major, courseNum, courseSect, courseTitle, professor = get_data_as_lists(file_name)
 
-    # print semester_dict(course_time(academicStatus,academicYear),1.5)
-    # print len(semester_dict(course_time(academicStatus,academicYear),1.5))
-    # print len(ID)
-    # plot(semester_dict(course_time(academicStatus,academicYear),1.5))
+    print semester_dict(course_time(academicStatus,academicYear),1.5)
+    print len(semester_dict(course_time(academicStatus,academicYear),1.5))
+    print len(ID)
+    plot()
