@@ -47,25 +47,14 @@ def get_data_as_lists(file_name):
     return gradStatus, gradYear, ID, academicYear, gender, academicStatus, major, courseNum, courseSect, courseTitle, professor
 
 ######################################################################### LABELS
-# gradStatus = get_data_as_lists(file_name)[0]
-# gradYear = get_data_as_lists(file_name)[1]
-# ID = get_data_as_lists(file_name)[2]
-# academicYear = get_data_as_lists(file_name)[3]
-# gender = get_data_as_lists(file_name)[4]
-# academicStatus = get_data_as_lists(file_name)[5]
-# major = get_data_as_lists(file_name)[6]
-# courseNum = get_data_as_lists(file_name)[7]
-# courseSect = get_data_as_lists(file_name)[8]
-# courseTitle = get_data_as_lists(file_name)[9]
-# professor = get_data_as_lists(file_name)[10]
 gradStatus, gradYear, ID, academicYear, gender, academicStatus, major, courseNum, courseSect, courseTitle, professor = get_data_as_lists(file_name)
 
 def course_time(academicStatus,academicYear):
     """
     academicStatus: list denoting freshman, sophomore, junior, and senior status
     academicYear: list denoting semester based off year courses are taken
-    returns: course_time, which is a dictionary of courseNumbers being paired with
-        the semester they are taken
+    returns: course_semester_taken, which is a list of tuples with courseNumbers 
+    being paired with the semester they are taken
     """
 
     # Calculating semester
@@ -88,37 +77,39 @@ def course_time(academicStatus,academicYear):
         elif academicStatus[i]=='SR' and ('SP' in academicYear[i]):
             semester.append(4.5)
 
-    # Pairing course with semester
+    # Pairing course with semester in tuples (tuples within a list)
     course_semester_taken = []
     for i in range(len(semester)):
         course_semester_taken.append((courseNum[i],semester[i]))
 
+    return course_semester_taken
+
+def semester_dict(course_semester_taken, sem_number):
     sem_courses = {}
     for element in course_semester_taken:
         if element[1]==sem_number:
             course = element[0]
             count = sem_courses.get(course,0)
             sem_courses[course] = count + 1
-            # sem1_courseNum.append(element[0])
 
 
-    sem2_courseNum = []
-    for element in course_semester_taken:
-        if element[1]==1.0:
-            sem2_courseNum.append(element[0])
+#     sem2_courseNum = []
+#     for element in course_semester_taken:
+#         if element[1]==1.0:
+#             sem2_courseNum.append(element[0])
 
-######################################################################### DICTIONARIES
-    sem1 = {}
-    for course in sem1_courseNum:
-        current = sem1.get(course,0)
-        sem1[course] = current + 1
+# ######################################################################### DICTIONARIES
+#     sem1 = {}
+#     for course in sem1_courseNum:
+#         current = sem1.get(course,0)
+#         sem1[course] = current + 1
 
-    sem2 = {}
-    for course in sem2_courseNum:
-        current = sem2.get(course,0)
-        sem2[course] = current + 1         
+#     sem2 = {}
+#     for course in sem2_courseNum:
+#         current = sem2.get(course,0)
+#         sem2[course] = current + 1         
 
-    return sem2
+    return sem_courses
 
 def count_frequency_per_semester(courseList):
     d = dict()
@@ -128,7 +119,7 @@ def count_frequency_per_semester(courseList):
     return d
 
 if __name__ == '__main__':
-    print course_time(academicStatus,academicYear)
-    print len(course_time(academicStatus,academicYear))
+    print semester_dict(course_time(academicStatus,academicYear),1.5)
+    print len(semester_dict(course_time(academicStatus,academicYear),1.5))
     print len(ID)
     # print count_frequency_per_semester(courseNum)
