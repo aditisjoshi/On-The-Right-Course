@@ -97,13 +97,17 @@ def semester_dict(course_semester_taken, sem_number):
             count = sem_courses.get(course,0)
             sem_courses[course] = count + 1
 
-    return sem_courses
+    # sort the dictionary by most to least frequent
+    ordered_sem_courses = sorted(sem_courses, key=sem_courses.__getitem__, reverse=True)
 
-def plot(sem_courses):
+    print ordered_sem_courses
+    return ordered_sem_courses
+
+def plot(ordered_sem_courses):
     data = Data([
         Bar(
-            x = sem_courses.keys(),
-            y = sem_courses.values()
+            x = ordered_sem_courses.values(),
+            y = ordered_sem_courses.keys()
         )
     ])
     plot_url = py.plot(data, filename='basic-bar')
@@ -112,7 +116,7 @@ if __name__ == '__main__':
     
     gradStatus, gradYear, ID, academicYear, gender, academicStatus, major, courseNum, courseSect, courseTitle, professor = get_data_as_lists(file_name)
 
-    print semester_dict(course_time(academicStatus,academicYear),1.5)
-    print len(semester_dict(course_time(academicStatus,academicYear),1.5))
-    print len(ID)
-    plot(semester_dict(course_time(academicStatus,academicYear),1.5))
+    # print semester_dict(course_time(academicStatus,academicYear),1.5)
+    # print len(semester_dict(course_time(academicStatus,academicYear),1.5))
+    # print len(ID)
+    # plot(semester_dict(course_time(academicStatus,academicYear),1.5))
