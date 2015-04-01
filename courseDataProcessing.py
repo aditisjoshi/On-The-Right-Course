@@ -47,17 +47,18 @@ def get_data_as_lists(file_name):
     return gradStatus, gradYear, ID, academicYear, gender, academicStatus, major, courseNum, courseSect, courseTitle, professor
 
 ######################################################################### LABELS
-gradStatus = get_data_as_lists(file_name)[0]
-gradYear = get_data_as_lists(file_name)[1]
-ID = get_data_as_lists(file_name)[2]
-academicYear = get_data_as_lists(file_name)[3]
-gender = get_data_as_lists(file_name)[4]
-academicStatus = get_data_as_lists(file_name)[5]
-major = get_data_as_lists(file_name)[6]
-courseNum = get_data_as_lists(file_name)[7]
-courseSect = get_data_as_lists(file_name)[8]
-courseTitle = get_data_as_lists(file_name)[9]
-professor = get_data_as_lists(file_name)[10]
+# gradStatus = get_data_as_lists(file_name)[0]
+# gradYear = get_data_as_lists(file_name)[1]
+# ID = get_data_as_lists(file_name)[2]
+# academicYear = get_data_as_lists(file_name)[3]
+# gender = get_data_as_lists(file_name)[4]
+# academicStatus = get_data_as_lists(file_name)[5]
+# major = get_data_as_lists(file_name)[6]
+# courseNum = get_data_as_lists(file_name)[7]
+# courseSect = get_data_as_lists(file_name)[8]
+# courseTitle = get_data_as_lists(file_name)[9]
+# professor = get_data_as_lists(file_name)[10]
+gradStatus, gradYear, ID, academicYear, gender, academicStatus, major, courseNum, courseSect, courseTitle, professor = get_data_as_lists(file_name)
 
 def course_time(academicStatus,academicYear):
     """
@@ -72,31 +73,52 @@ def course_time(academicStatus,academicYear):
     for i in range(len(academicStatus)):
         if academicStatus[i] in ('FF', 'TF'):
             semester.append(1.0)
-        if academicStatus[i]=='FR':
+        elif academicStatus[i]=='FR':
             semester.append(1.5)
-        if academicStatus[i]=='SO' and ('FA' in academicYear[i]):
+        elif academicStatus[i]=='SO' and ('FA' in academicYear[i]):
             semester.append(2.0)
-        if academicStatus[i]=='SO' and ('SP' in academicYear[i]):
+        elif academicStatus[i]=='SO' and ('SP' in academicYear[i]):
             semester.append(2.5)
-        if academicStatus[i]=='JR' and ('FA' in academicYear[i]):
+        elif academicStatus[i]=='JR' and ('FA' in academicYear[i]):
             semester.append(3.0)
-        if academicStatus[i]=='JR' and ('SP' in academicYear[i]):
+        elif academicStatus[i]=='JR' and ('SP' in academicYear[i]):
             semester.append(3.5)
-        if academicStatus[i]=='SR' and ('FA' in academicYear[i]):
+        elif academicStatus[i]=='SR' and ('FA' in academicYear[i]):
             semester.append(4.0)
-        if academicStatus[i]=='JR' and ('SP' in academicYear[i]):
+        elif academicStatus[i]=='SR' and ('SP' in academicYear[i]):
             semester.append(4.5)
 
     # Pairing course with semester
-    course_time = {}
+    course_semester_taken = []
     for i in range(len(semester)):
-        course_time[courseNum[i]] = semester[i]
-        # course_time will always be overidden
-        # course_time = {[ENGR0000,1.0],[ENGR0000,3.0]....}
-        # does not count frequency
-        # maybe make a list of tuples (courseNum,semester)
+        course_semester_taken.append((courseNum[i],semester[i]))
 
-    return course_time
+    sem_courses = {}
+    for element in course_semester_taken:
+        if element[1]==sem_number:
+            course = element[0]
+            count = sem_courses.get(course,0)
+            sem_courses[course] = count + 1
+            # sem1_courseNum.append(element[0])
+
+
+    sem2_courseNum = []
+    for element in course_semester_taken:
+        if element[1]==1.0:
+            sem2_courseNum.append(element[0])
+
+######################################################################### DICTIONARIES
+    sem1 = {}
+    for course in sem1_courseNum:
+        current = sem1.get(course,0)
+        sem1[course] = current + 1
+
+    sem2 = {}
+    for course in sem2_courseNum:
+        current = sem2.get(course,0)
+        sem2[course] = current + 1         
+
+    return sem2
 
 def count_frequency_per_semester(courseList):
     d = dict()
