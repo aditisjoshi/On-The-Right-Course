@@ -97,12 +97,17 @@ def semester_dict(course_semester_taken, sem_number):
             count = sem_courses.get(course,0)
             sem_courses[course] = count + 1
 
-    # # sort the dictionary by most to least frequent
-    # ordered_freq_dict = sorted(freq_dict, key=freq_dict.__getitem__, reverse=True)
-    # # omit the boring helping words (ex. 'I', 'to', 'a', etc.)
-    # rants = ordered_freq_dict[230:250]      # stops at "after"
-
     return sem_courses
+
+def capped_percent(sem_courses):
+    """
+    returns percentage # of ppl in the semester who have taken the 
+    course as an ordered list of tuples (courseNum, percentage)
+    """
+    # find length of a list of a single semester (find how many students are in a semester)
+    # (sem_courses for a specific semester_num)/(number from above)
+    # =percentage
+    pass
 
 def plot():
     trace1 = Bar(
@@ -161,21 +166,11 @@ def plot():
     plot_url = py.plot(fig, filename='grouped-bar')
 
 
-
-##################################################
-    # data = Data([
-    #     Bar(
-    #         x = sem_courses.keys(),
-    #         y = sem_courses.values()
-    #     )
-    # ])
-    # plot_url = py.plot(data, filename='basic-bar')
-
 if __name__ == '__main__':
     
     gradStatus, gradYear, ID, academicYear, gender, academicStatus, major, courseNum, courseSect, courseTitle, professor = get_data_as_lists(file_name)
 
-    print semester_dict(course_time(academicStatus,academicYear),1.5)
-    print len(semester_dict(course_time(academicStatus,academicYear),1.5))
-    print len(ID)
+    # print semester_dict(course_time(academicStatus,academicYear),1.5)
+    # print len(semester_dict(course_time(academicStatus,academicYear),1.5))
+    # print len(ID)
     plot()
