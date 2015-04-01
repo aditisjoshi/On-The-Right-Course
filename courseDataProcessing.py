@@ -9,6 +9,9 @@ based on major and/ or semester.
 """
 
 import csv
+import plotly.plotly as py
+from plotly.graph_objs import *
+
 
 # Name of data file
 file_name = 'course_enrollments_2002-2014spring_anonymized.csv'
@@ -61,7 +64,7 @@ def course_time(academicStatus,academicYear):
     # Calculating semester and paring courses with semester
     course_semester_taken = []
     for i in range(len(academicStatus)):
-        if academicStatus[i] == 'TF' or academicStatus[i] == 'FF':
+        if (academicStatus[i]=='TF') or (academicStatus[i]=='FF'):
             course_semester_taken.append((courseNum[i],1.0))
         elif academicStatus[i]=='FR':
             course_semester_taken.append((courseNum[i],1.5))
@@ -96,11 +99,20 @@ def semester_dict(course_semester_taken, sem_number):
 
     return sem_courses
 
+def plot(sem_courses):
+    data = Data([
+        Bar(
+            x = sem_courses.keys(),
+            y = sem_courses.values()
+        )
+    ])
+    plot_url = py.plot(data, filename='basic-bar')
 
 if __name__ == '__main__':
     
     gradStatus, gradYear, ID, academicYear, gender, academicStatus, major, courseNum, courseSect, courseTitle, professor = get_data_as_lists(file_name)
 
-    print semester_dict(course_time(academicStatus,academicYear),1.0)
-    print len(semester_dict(course_time(academicStatus,academicYear),1.0))
+    print semester_dict(course_time(academicStatus,academicYear),1.5)
+    print len(semester_dict(course_time(academicStatus,academicYear),1.5))
     print len(ID)
+    plot(semester_dict(course_time(academicStatus,academicYear),1.5))
