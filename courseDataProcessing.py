@@ -101,60 +101,79 @@ def semester_dict(course_semester_taken, sem_number):
 
 def capped_percent(sem_courses):
     """
+    sem_courses: dictionary of courses with the number of people enrolled in
+    at a specified semester
     returns percentage # of ppl in the semester who have taken the 
     course as an ordered list of tuples (courseNum, percentage)
     """
-    # find length of a list of a single semester (find how many students are in a semester)
-    # (sem_courses for a specific semester_num)/(number from above)
-    # =percentage
-    pass
+    # # number of registration occurrences in a semester
+    # stuNum = len(sem_courses)
+    # # find length of a list of a single semester (find how many students are in a semester)
+    # # (sem_courses for a specific semester_num)/(number from above)
+    # # =percentage
+    # pass
+
+#################################################### NOT PERCENTAGE YET
+    # split the dictionary into two lists
+    # sort list of courses by most popular
+    ordered_sem_courses = sorted(sem_courses, key=sem_courses.__getitem__, reverse=True)
+    # make list that contains the number associated with the course
+    percentage = []
+    for course in ordered_sem_courses:
+        percentage.append(sem_courses[course])
+
+    capped_sem_courses = ordered_sem_courses[:10]
+    capped_percentages = percentage[:10]
+
+    return capped_sem_courses, capped_percentages
+
 
 def plot():
     trace1 = Bar(
-        x = semester_dict(course_time(academicStatus,academicYear),1.0).values(),
-        y = semester_dict(course_time(academicStatus,academicYear),1.0).keys(),
+        x = capped_percent(semester_dict(course_time(academicStatus,academicYear),1.0))[1],
+        y = capped_percent(semester_dict(course_time(academicStatus,academicYear),1.0))[0],
         name='Sem 1',
         orientation='h'
         )
     trace2 = Bar(
-        x = semester_dict(course_time(academicStatus,academicYear),1.5).values(),
-        y = semester_dict(course_time(academicStatus,academicYear),1.5).keys(),
+        x = capped_percent(semester_dict(course_time(academicStatus,academicYear),1.5))[1],
+        y = capped_percent(semester_dict(course_time(academicStatus,academicYear),1.5))[0],
         name='Sem 1.5',
         orientation='h'
         )
     trace3 = Bar(
-        x = semester_dict(course_time(academicStatus,academicYear),2.0).values(),
-        y = semester_dict(course_time(academicStatus,academicYear),2.0).keys(),
+        x = capped_percent(semester_dict(course_time(academicStatus,academicYear),2.0))[1],
+        y = capped_percent(semester_dict(course_time(academicStatus,academicYear),2.0))[0],
         name='Sem 2.0',
         orientation='h'
         )
     trace4 = Bar(
-        x = semester_dict(course_time(academicStatus,academicYear),2.5).values(),
-        y = semester_dict(course_time(academicStatus,academicYear),2.5).keys(),
+        x = capped_percent(semester_dict(course_time(academicStatus,academicYear),2.5))[1],
+        y = capped_percent(semester_dict(course_time(academicStatus,academicYear),2.5))[0],
         name='Sem 2.5',
         orientation='h'
         )
     trace5 = Bar(
-        x = semester_dict(course_time(academicStatus,academicYear),3.0).values(),
-        y = semester_dict(course_time(academicStatus,academicYear),3.0).keys(),
+        x = capped_percent(semester_dict(course_time(academicStatus,academicYear),3.0))[1],
+        y = capped_percent(semester_dict(course_time(academicStatus,academicYear),3.0))[0],
         name='Sem 3.0',
         orientation='h'
         )
     trace6 = Bar(
-        x = semester_dict(course_time(academicStatus,academicYear),3.5).values(),
-        y = semester_dict(course_time(academicStatus,academicYear),3.5).keys(),
+        x = capped_percent(semester_dict(course_time(academicStatus,academicYear),3.5))[1],
+        y = capped_percent(semester_dict(course_time(academicStatus,academicYear),3.5))[0],
         name='Sem 3.5',
         orientation='h'
         )
     trace7 = Bar(
-        x = semester_dict(course_time(academicStatus,academicYear),4.0).values(),
-        y = semester_dict(course_time(academicStatus,academicYear),4.0).keys(),
+        x = capped_percent(semester_dict(course_time(academicStatus,academicYear),4.0))[1],
+        y = capped_percent(semester_dict(course_time(academicStatus,academicYear),4.0))[0],
         name='Sem 4.0',
         orientation='h'
         )
     trace8 = Bar(
-        x = semester_dict(course_time(academicStatus,academicYear),4.5).values(),
-        y = semester_dict(course_time(academicStatus,academicYear),4.5).keys(),
+        x = capped_percent(semester_dict(course_time(academicStatus,academicYear),4.5))[1],
+        y = capped_percent(semester_dict(course_time(academicStatus,academicYear),4.5))[0],
         name='Sem 4.5',
         orientation='h'
         )
