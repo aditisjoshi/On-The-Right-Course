@@ -112,7 +112,9 @@ def capped_percent(df, sem):
     
     # calcs the % by dividing the number of registered students per course by total number of students
     percentages = (courseFreq/numStudents)*100
-    print percentages
+    
+    # sort the dataframe by highest to lowest percentage
+    percentages.sort(ascending=False, inplace=True)
 
     # FIND THE COURSES TAKEN IN THE SPECIFIED SEMESTER
     # FIND THE GRADUATION YEAR OF THE PEOPLE WHO TOOK THE COURSE THAT SEM
