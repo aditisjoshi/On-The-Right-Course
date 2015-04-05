@@ -101,30 +101,19 @@ def capped_percent(df, sem):
     course as an ordered list of tuples (courseNum, percentage)
     """
 
-    # # split the dictionary into two lists
-    # # sort list of courses by most popular
-    # ordered_sem_courses = sorted(sem_courses, key=sem_courses.__getitem__, reverse=True)
-    # # make list that contains the number associated with the course
-    # percentage = []
-    # for course in ordered_sem_courses:
-    #     percentage.append(sem_courses[course])
-
-    # capped_sem_courses = ordered_sem_courses[:10]
-    # capped_percentages = percentage[:10]
-
-    # return capped_sem_courses, capped_percentages
-
-#################################################### NOT PERCENTAGE YET
+    # create a new dataframe that shows all data for only the specified semester
     sem_df = df[df.semester==sem]
 
-    """ make a dictionary for each course of grad year and people in that year
-    ENGR23434 - {2007:67, 2006: 87, 2010: 0}
+    # counts the number of students registered in specified semester
+    numStudents = sem_df.ID.nunique()
+    
+    # count the number of people (all gradYears) registered for a course
+    courseFreq = sem_df.groupby('courseNum').ID.nunique()
+    
+    # calcs the % by dividing the number of registered students per course by total number of students
+    percentages = (courseFreq/numStudents)*100
+    print percentages
 
-    find the number of people registered that semester for each grad year
-    gradYear_regist = {2013:89, 2012:97, ...}
-    """
- 
-    numSt = sem_df.ID.nunique()
     # FIND THE COURSES TAKEN IN THE SPECIFIED SEMESTER
     # FIND THE GRADUATION YEAR OF THE PEOPLE WHO TOOK THE COURSE THAT SEM
         # GROUP THOSE PEOPLE
@@ -136,9 +125,9 @@ def capped_percent(df, sem):
     # testfile = open('sem1.txt','w')
     # testfile.write(str(sem1))
 
-    return numSt
+    return courseFreq
 
 
 if __name__ == '__main__':
     # print get_df(file_name)
-    print capped_percent(get_df(file_name),1.5)
+    capped_percent(get_df(file_name),1.0)
