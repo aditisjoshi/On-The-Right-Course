@@ -55,6 +55,7 @@ def get_df(file_name):
     """
     file_name: csv file that contains the course data
     separates the data from the file into its columns, each column is a list
+    returns: df-data frame that holds all the organized data from file_name
     """
 
     # labelling of data lists
@@ -93,4 +94,51 @@ def get_df(file_name):
     return df
 
 
-print get_df(file_name)
+def capped_percent(df, sem):
+    """
+    df: data frame that contains all the course registration data as an array
+    returns percentage # of ppl in the semester who have taken the 
+    course as an ordered list of tuples (courseNum, percentage)
+    """
+
+    # # split the dictionary into two lists
+    # # sort list of courses by most popular
+    # ordered_sem_courses = sorted(sem_courses, key=sem_courses.__getitem__, reverse=True)
+    # # make list that contains the number associated with the course
+    # percentage = []
+    # for course in ordered_sem_courses:
+    #     percentage.append(sem_courses[course])
+
+    # capped_sem_courses = ordered_sem_courses[:10]
+    # capped_percentages = percentage[:10]
+
+    # return capped_sem_courses, capped_percentages
+
+#################################################### NOT PERCENTAGE YET
+    sem_df = df[df.semester==sem]
+
+    """ make a dictionary for each course of grad year and people in that year
+    ENGR23434 - {2007:67, 2006: 87, 2010: 0}
+
+    find the number of people registered that semester for each grad year
+    gradYear_regist = {2013:89, 2012:97, ...}
+    """
+ 
+    numSt = sem_df.ID.nunique()
+    # FIND THE COURSES TAKEN IN THE SPECIFIED SEMESTER
+    # FIND THE GRADUATION YEAR OF THE PEOPLE WHO TOOK THE COURSE THAT SEM
+        # GROUP THOSE PEOPLE
+        # DO THE PERCENTAGE CALC WITH THAT GROUP
+            # DO IT FOR EVERY GRAD YEAR
+    # AVERAGE ALL THOSE PERCENTAGES FOR EVERY COURSE
+
+
+    # testfile = open('sem1.txt','w')
+    # testfile.write(str(sem1))
+
+    return numSt
+
+
+if __name__ == '__main__':
+    # print get_df(file_name)
+    print capped_percent(get_df(file_name),1.5)
