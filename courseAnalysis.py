@@ -114,22 +114,14 @@ def capped_percent(df, sem):
     percentages = (courseFreq/numStudents)*100
     
     # sort the dataframe by highest to lowest percentage
-    percentages.sort(ascending=False, inplace=True)
+    percentages.sort(ascending=False)
 
-    # FIND THE COURSES TAKEN IN THE SPECIFIED SEMESTER
-    # FIND THE GRADUATION YEAR OF THE PEOPLE WHO TOOK THE COURSE THAT SEM
-        # GROUP THOSE PEOPLE
-        # DO THE PERCENTAGE CALC WITH THAT GROUP
-            # DO IT FOR EVERY GRAD YEAR
-    # AVERAGE ALL THOSE PERCENTAGES FOR EVERY COURSE
+    # limit the list of courses to the top 10
+    capped_percentages = percentages.head(10)
 
-
-    # testfile = open('sem1.txt','w')
-    # testfile.write(str(sem1))
-
-    return courseFreq
+    return capped_percentages
 
 
 if __name__ == '__main__':
     # print get_df(file_name)
-    capped_percent(get_df(file_name),1.0)
+    print capped_percent(get_df(file_name),1.0)
