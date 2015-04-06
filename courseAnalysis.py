@@ -106,7 +106,7 @@ def capped_percent(df, sem):
 
     # counts the number of students registered in specified semester
     numStudents = sem_df.ID.nunique()
-    
+
     # count the number of people (all gradYears) registered for a course
     courseFreq = sem_df.groupby('courseNum').ID.nunique()
     
@@ -119,9 +119,34 @@ def capped_percent(df, sem):
     # limit the list of courses to the top 10
     capped_percentages = percentages.head(10)
 
-    return capped_percentages
+    # list of courses
+    courses = capped_percentages.index.values
+    
+    # list of percentages
+    list_percent = capped_percentages.tolist()
+
+    # combine them back into a dataframe
+    capped_percents = pd.DataFrame({'courseNum': courses, 'Percent': list_percent})
+
+    return capped_percents
+
+def df_to_list(df):
+    """
+    takes a dataframe and splits all the columns into separate lists
+    """
+
+    df_list = []
+    header_list = list(df)
+    for header in header_list:
+        df_list.append(df[header].tolist())
+
+    return df_list
 
 
 if __name__ == '__main__':
-    # print get_df(file_name)
     print capped_percent(get_df(file_name),1.0)
+    print df_to_list(capped_percent(get_df(file_name),1.0))
+    # print capped_percent(get_df(file_name),1.0).columns
+    # print capped_percent(get_df(file_name),1.0).columns.values.tolist()
+    # print list(capped_percent(get_df(file_name),1.0))
+    # print list(get_df(file_name))
