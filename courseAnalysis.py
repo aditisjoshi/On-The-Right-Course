@@ -17,6 +17,45 @@ import numpy as np
 # Name of data file
 file_name = 'course_enrollments_2002-2014spring_anonymized.csv'
 
+
+def major_fixes(df):
+    """
+    this method takes in each student's ID and their major. If their major is 
+    undefined at any point, the function will take in the first major it finds
+    for that ID 
+    """
+
+    # finds all the uni
+    IDs = df.ID.unique()
+
+    # for i,ID in enumerate(IDs):
+    #     print df['ID'].loc[ID]
+        # start = indexList[0]
+        # end = indexList[-1]
+        # df['major'][start:end] = 'test'
+
+    # IDstarts = []
+    # for i, ID in enumerate(df.ID):
+    #     print i, ID
+    #     if ID[i] != ID[i-1]:
+    #         pass
+    #         # IDstarts.append(df['ID'].loc[ID].index)
+
+    # # print IDstarts
+
+    # # df['major'][starting:ending]
+
+
+    # indexList = df.loc[df['ID'] == ID[i]].index.tolist()
+    # start = indexList[0]
+    # end = indexList[-1]
+    # df['major'][start:end] = 'test'
+
+    # return df
+
+    return IDs
+
+
 def course_time(academicStatus,academicYear):
     """
     academicStatus: list denoting freshman, sophomore, junior, and senior status
@@ -129,6 +168,7 @@ def capped_percent(df, sem):
 
     return capped_percents
 
+
 def add_percent_symbol(list_percent):
     """
     takes a list of the percentages and returns a list of the rounded #s with
@@ -210,6 +250,7 @@ def plot():
     plot_url = py.plot(fig, filename='grouped-bar')
 
 if __name__ == '__main__':
-    print df_to_list(capped_percent(get_df(file_name),1.0))
-    plot()
+    df_to_list(capped_percent(get_df(file_name),1.0))
+    print major_fixes(get_df(file_name))
+    # plot()
 
