@@ -25,11 +25,28 @@ def major_fixes(df):
     for that ID 
     """
 
-    # finds all the uni
-    IDs = df.ID.unique()
+    # finds all the unique ids and all ids
+    uniqueIDs = df.ID.unique()
+    allIDs = df['ID']
+    ends = []
+    major = []
 
-    # for i,ID in enumerate(IDs):
-    #     print df['ID'].loc[ID]
+    for i in range(len(allIDs)-1):
+        if allIDs[i] != allIDs[i+1]:
+            end = i
+            ends.append(end)
+     
+    
+    for i, ID in enumerate(uniqueIDs):
+        major = df.major[end[0]]
+
+        print major
+
+    # for ID in IDs:
+        # indexList = df['ID'].loc[ID]
+
+        # finds the list of indices at which the specified number appears
+    # indexList = df.loc[df.ID==602].index.tolist()
         # start = indexList[0]
         # end = indexList[-1]
         # df['major'][start:end] = 'test'
@@ -53,7 +70,7 @@ def major_fixes(df):
 
     # return df
 
-    return IDs
+    # return indexList
 
 
 def course_time(academicStatus,academicYear):
