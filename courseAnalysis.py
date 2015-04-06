@@ -17,7 +17,6 @@ import numpy as np
 # Name of data file
 file_name = 'course_enrollments_2002-2014spring_anonymized.csv'
 
-
 def course_time(academicStatus,academicYear):
     """
     academicStatus: list denoting freshman, sophomore, junior, and senior status
@@ -113,7 +112,7 @@ def capped_percent(df, sem):
     # calcs the % by dividing the number of registered students per course by total number of students
     percentages = (courseFreq/numStudents)*100
     
-    # sort the dataframe by highest to lowest percentage
+    # sort the Series by highest to lowest percentage
     percentages.sort(ascending=False)
 
     # limit the list of courses to the top 10
@@ -130,6 +129,17 @@ def capped_percent(df, sem):
 
     return capped_percents
 
+def add_percent_symbol(list_percent):
+    """
+    takes a list of the percentages and returns a list of the rounded #s with
+    the percent symbol
+    """
+    list_percentages = []
+    for element in list_percent:
+        list_percentages.append(str(int(element))+'%')
+
+    return list_percentages
+
 def df_to_list(df):
     """
     takes a dataframe and splits all the columns into separate lists
@@ -143,10 +153,63 @@ def df_to_list(df):
     return df_list
 
 
+def plot():
+    trace1 = Bar(
+        x = df_to_list(capped_percent(get_df(file_name),1.0))[0],
+        y = df_to_list(capped_percent(get_df(file_name),1.0))[1],
+        name='Sem 1',
+        orientation='h'
+        )
+    trace2 = Bar(
+        x = df_to_list(capped_percent(get_df(file_name),1.5))[0],
+        y = df_to_list(capped_percent(get_df(file_name),1.5))[1],
+        name='Sem 1.5',
+        orientation='h'
+        )
+    trace3 = Bar(
+        x = df_to_list(capped_percent(get_df(file_name),2.0))[0],
+        y = df_to_list(capped_percent(get_df(file_name),2.0))[1],
+        name='Sem 2.0',
+        orientation='h'
+        )
+    trace4 = Bar(
+        x = df_to_list(capped_percent(get_df(file_name),2.5))[0],
+        y = df_to_list(capped_percent(get_df(file_name),2.5))[1],
+        name='Sem 2.5',
+        orientation='h'
+        )
+    trace5 = Bar(
+        x = df_to_list(capped_percent(get_df(file_name),3.0))[0],
+        y = df_to_list(capped_percent(get_df(file_name),3.0))[1],
+        name='Sem 3.0',
+        orientation='h'
+        )
+    trace6 = Bar(
+        x = df_to_list(capped_percent(get_df(file_name),3.5))[0],
+        y = df_to_list(capped_percent(get_df(file_name),3.5))[1],
+        name='Sem 3.5',
+        orientation='h'
+        )
+    trace7 = Bar(
+        x = df_to_list(capped_percent(get_df(file_name),4.0))[0],
+        y = df_to_list(capped_percent(get_df(file_name),4.0))[1],
+        name='Sem 4.0',
+        orientation='h'
+        )
+    trace8 = Bar(
+        x = df_to_list(capped_percent(get_df(file_name),4.5))[0],
+        y = df_to_list(capped_percent(get_df(file_name),4.5))[1],
+        name='Sem 4.5',
+        orientation='h'
+        )
+    data = Data([trace1, trace2, trace3, trace4, trace5, trace6, trace7, trace8])
+    layout = Layout(
+        barmode='group'
+        )
+    fig = Figure(data=data, layout=layout)
+    plot_url = py.plot(fig, filename='grouped-bar')
+
 if __name__ == '__main__':
-    print capped_percent(get_df(file_name),1.0)
     print df_to_list(capped_percent(get_df(file_name),1.0))
-    # print capped_percent(get_df(file_name),1.0).columns
-    # print capped_percent(get_df(file_name),1.0).columns.values.tolist()
-    # print list(capped_percent(get_df(file_name),1.0))
-    # print list(get_df(file_name))
+    plot()
+
