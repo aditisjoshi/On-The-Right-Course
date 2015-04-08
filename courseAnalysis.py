@@ -95,7 +95,7 @@ def get_df(file_name):
     return df
 
 
-def major_filter(df):
+def major_filter(df, major):
     """
     this method takes in each student's ID and their major. If their major is 
     undefined at any point, the function will take in the first major it finds
@@ -116,7 +116,10 @@ def major_filter(df):
         # change all previous majors to be the same as last updated major
         df.loc[startID:endID+1, 'major'] = latestMajor
 
-    return df
+    # create a new dataframe that shows all data for only the specified major
+    major_df = df[df.major == major]
+
+    return major_df
 
 
 def capped_percent(df, sem):
@@ -156,19 +159,6 @@ def capped_percent(df, sem):
     return capped_percents
 
 
-def add_percent_symbol(list_percent):
-    """
-    takes a list of the percentages and returns a list of the rounded #s with
-    the percent symbol
-    """
-
-    list_percentages = []
-    for element in list_percent:
-        list_percentages.append(str(int(element))+'%')
-
-    return list_percentages
-
-
 def df_to_list(df):
     """
     takes a dataframe and splits all the columns into separate lists
@@ -182,60 +172,93 @@ def df_to_list(df):
     return df_list
 
 
-def plot():
+def find_all_sem(df, major):
+    """
+    finds all of the semester capped percentages for a specific major 
+    and returns them as lists
+    """
+
+    df = major_filter(df, major)
+
+    sem1 = df_to_list(capped_percent(df, 1.0))
+    sem2 = df_to_list(capped_percent(df, 1.5))
+    sem3 = df_to_list(capped_percent(df, 2.0))
+    sem4 = df_to_list(capped_percent(df, 2.5))
+    sem5 = df_to_list(capped_percent(df, 3.0))
+    sem6 = df_to_list(capped_percent(df, 3.5))
+    sem7 = df_to_list(capped_percent(df, 4.0))
+    sem8 = df_to_list(capped_percent(df, 4.5))
+
+    return sem1, sem2, sem3, sem4, sem5, sem6, sem7, sem8
+
+
+def add_percent_symbol(list_percent):
+    """
+    takes a list of the percentages and returns a list of the rounded #s with
+    the percent symbol
+    """
+
+    list_percentages = []
+    for element in list_percent:
+        list_percentages.append(str(int(element))+'%')
+
+    return list_percentages
+
+
+def plot(sem1, sem2, sem3, sem4, sem5, sem6, sem7, sem8):
 
     trace1 = Bar(
-        x = df_to_list(capped_percent(get_df(file_name),1.0))[0],
-        y = df_to_list(capped_percent(get_df(file_name),1.0))[1],
+        x = sem1[0],
+        y = sem1[1],
         name='Sem 1',
         orientation='h'
         )
 
     trace2 = Bar(
-        x = df_to_list(capped_percent(get_df(file_name),1.5))[0],
-        y = df_to_list(capped_percent(get_df(file_name),1.5))[1],
+        x = sem2[0],
+        y = sem2[1],
         name='Sem 1.5',
         orientation='h'
         )
 
     trace3 = Bar(
-        x = df_to_list(capped_percent(get_df(file_name),2.0))[0],
-        y = df_to_list(capped_percent(get_df(file_name),2.0))[1],
+        x = sem3[0],
+        y = sem3[1],
         name='Sem 2.0',
         orientation='h'
         )
 
     trace4 = Bar(
-        x = df_to_list(capped_percent(get_df(file_name),2.5))[0],
-        y = df_to_list(capped_percent(get_df(file_name),2.5))[1],
+        x = sem4[0],
+        y = sem4[1],
         name='Sem 2.5',
         orientation='h'
         )
 
     trace5 = Bar(
-        x = df_to_list(capped_percent(get_df(file_name),3.0))[0],
-        y = df_to_list(capped_percent(get_df(file_name),3.0))[1],
+        x = sem5[0],
+        y = sem5[1],
         name='Sem 3.0',
         orientation='h'
         )
 
     trace6 = Bar(
-        x = df_to_list(capped_percent(get_df(file_name),3.5))[0],
-        y = df_to_list(capped_percent(get_df(file_name),3.5))[1],
+        x = sem6[0],
+        y = sem6[1],
         name='Sem 3.5',
         orientation='h'
         )
 
     trace7 = Bar(
-        x = df_to_list(capped_percent(get_df(file_name),4.0))[0],
-        y = df_to_list(capped_percent(get_df(file_name),4.0))[1],
+        x = sem7[0],
+        y = sem7[1],
         name='Sem 4.0',
         orientation='h'
         )
 
     trace8 = Bar(
-        x = df_to_list(capped_percent(get_df(file_name),4.5))[0],
-        y = df_to_list(capped_percent(get_df(file_name),4.5))[1],
+        x = sem8[0],
+        y = sem8[1],
         name='Sem 4.5',
         orientation='h'
         )
@@ -252,6 +275,8 @@ def plot():
 
 
 if __name__ == '__main__':
-    df_to_list(capped_percent(get_df(file_name),1.0))
-    print major_filter(get_df(file_name))
-    # plot()
+    df = get_df(file_name)
+
+    sem1, sem2, sem3, sem4, sem5, sem6, sem7, sem8 = find_all_sem(df, 'Mechanical Engineering  ')
+
+    plot(sem1, sem2, sem3, sem4, sem5, sem6, sem7, sem8)
