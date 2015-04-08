@@ -32,15 +32,16 @@ def major_fixes(df):
     major = []
 
     for i in range(len(allIDs)-1):
-        if allIDs[i] != allIDs[i+1]:
+        if allIDs[i+1] != allIDs[i]:
             end = i
             ends.append(end)
      
     
     for i, ID in enumerate(uniqueIDs):
-        major = df.major[end[0]]
+        major.append(df.major[ends[i-1]])
 
-        print major
+    return major
+
 
     # for ID in IDs:
         # indexList = df['ID'].loc[ID]
