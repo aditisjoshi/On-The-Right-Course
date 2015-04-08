@@ -100,10 +100,43 @@ def major_filter(df, major):
     this method takes in each student's ID and their major. If their major is 
     undefined at any point, the function will take in the first major it finds
     for that ID 
+
+    ['Undeclared              ' 'Mechanical Engineering  '
+     'Engineering             '
+     'Undeclared              Systems                 '
+     'Engineering             Systems                 '
+     'Undeclared              Computing               '
+     'Engineering             Computing               '
+     'Undeclared              Materials Science       '
+     'Mechanical Engineering  Materials Science       '
+     'Engineering             Materials Science       '
+     'Mechanical Engineering  Computing               '
+     'Undeclared              Bioengineering          '
+     'Engineering             Bioengineering          '
+     "Electr'l & Computer Engr"
+     'Undeclared              Self Designed           '
+     'Engineering             Self Designed           '
+     'Mechanical Engineering  Bioengineering          '
+     "Electr'l & Computer EngrComputing               "
+     "Electr'l & Computer EngrSystems                 "
+     'Mechanical Engineering  Systems                 '
+     'Mechanical Engineering  Self Designed           '
+     "Electr'l & Computer EngrSelf Designed           "
+     'Undeclared              Design                  '
+     'Mechanical Engineering  Design                  '
+     'Engineering             Design                  '
+     'Undeclared              Robotics                '
+     'Mechanical Engineering  Robotics                '
+     'Engineering             Robotics                '
+     'Exchange Student        Computing               '
+     "Electr'l & Computer EngrRobotics                "]
+
     """
 
     # finds all the unique ids and all ids
     uniqueIDs = df.ID.unique()
+    uniquemajors = df.major.unique()
+    print uniquemajors
 
     # find the start and end indices of the unique IDs 
     for idNum in uniqueIDs:
@@ -277,6 +310,6 @@ def plot(sem1, sem2, sem3, sem4, sem5, sem6, sem7, sem8):
 if __name__ == '__main__':
     df = get_df(file_name)
 
-    sem1, sem2, sem3, sem4, sem5, sem6, sem7, sem8 = find_all_sem(df, 'Mechanical Engineering  ')
+    sem1, sem2, sem3, sem4, sem5, sem6, sem7, sem8 = find_all_sem(df, 'Engineering             Design                  ')
 
     plot(sem1, sem2, sem3, sem4, sem5, sem6, sem7, sem8)
