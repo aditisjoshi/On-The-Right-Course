@@ -101,7 +101,8 @@ def major_filter(df, major):
     undefined at any point, the function will take in the first major it finds
     for that ID 
 
-    ['Undeclared              ' 'Mechanical Engineering  '
+    ['Undeclared              ' 
+     'Mechanical Engineering  '
      'Engineering             '
      'Undeclared              Systems                 '
      'Engineering             Systems                 '
@@ -133,10 +134,13 @@ def major_filter(df, major):
 
     """
 
+    # all majors that they can list from: ME, ECE, E:C, E:Robo, E:Bio, E:MatSci, E:Design, E:Systems
+    major_convert = {'ME': 'Mechanical Engineering  ', 'ECE': "Electr'l & Computer Engr", 'E:C': 'Engineering             Computing               ', 'E:Robo': 'Engineering             Robotics                ', 'E:Bio': 'Engineering             Bioengineering          ', 'E:MatSci': 'Engineering             Materials Science       ', 'E:Design': 'Engineering             Design                  ', 'E:Systems': 'Engineering             Systems                 '}
+    major = major_convert[major]
+
     # finds all the unique ids and all ids
     uniqueIDs = df.ID.unique()
     uniquemajors = df.major.unique()
-    print uniquemajors
 
     # find the start and end indices of the unique IDs 
     for idNum in uniqueIDs:
@@ -310,6 +314,6 @@ def plot(sem1, sem2, sem3, sem4, sem5, sem6, sem7, sem8):
 if __name__ == '__main__':
     df = get_df(file_name)
 
-    sem1, sem2, sem3, sem4, sem5, sem6, sem7, sem8 = find_all_sem(df, 'Engineering             Design                  ')
+    sem1, sem2, sem3, sem4, sem5, sem6, sem7, sem8 = find_all_sem(df, 'ME')
 
     plot(sem1, sem2, sem3, sem4, sem5, sem6, sem7, sem8)
