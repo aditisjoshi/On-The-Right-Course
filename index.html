@@ -8,8 +8,8 @@
 
 <a href="https://github.com/aditisjoshi/On-The-Right-Course/blob/gh-pages/SoftDesDesignReview1Reflection.pdf">Our first design review reflection can be found here.</a>
 
-<form action="" method='post'>    
-  <h3>What major would you like to look at?</h3>
+<form action="{{ url_for('post_log_workout') }}" method='post'>    
+  		<h3>What major would you like to look at?</h3>
   <select name='major'>
       <option value='MechE'>MechE</option>
       <option value='ECE'>ECE</option>
