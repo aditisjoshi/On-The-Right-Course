@@ -62,13 +62,15 @@ def get_df(file_name):
 
 
 class CourseDF(objet):
-	""" class creates the dataframe that contains the filtering functions """
+	""" 
+	class creates the dataframe that contains the filtering functions
+	"""
 
 	
 	def dataCleaning(df):
 		semLabel(df)
 		majorAssignment(df)
-		
+
 
 		def semLabel(academicStatus,academicYear):
 			"""
@@ -103,8 +105,8 @@ class CourseDF(objet):
 		    return course_semester_taken
 
 
-		def majorAssignment(df):
-						"""
+	    def majorAssignment(df):
+			"""
 		    this method takes in each student's ID and their major. If their major is 
 		    undefined at any point, the function will take in the first major it finds
 		    for that ID 
@@ -163,11 +165,24 @@ class CourseDF(objet):
         	return df
 
 
+		def oldCourses(df):
+			""" Get rid of courses that are no longer offered from the df by
+			looking at courses that are only offered in the last 4 years
+			"""
+
+
 	def filter(self, sem=none, major=none):
 
 
 		def semFilter(self,df, sem):
+			"""
+			Filters the data by a specified semester and outputs a df that 
+			contains data for only that semester
+			"""
+			
 			semCourses = 
+
+			return df
 
 
 		def majorFilter(self,df, major):
@@ -176,4 +191,62 @@ class CourseDF(objet):
 			return majorDF
 
 
+		def capped_parcent(df):
+			# counts the number of students registered in specified semester
+		    numStudents = sem_df.ID.nunique()
 
+		    # count the number of people (all gradYears) registered for a course
+		    courseFreq = sem_df.groupby('courseNum').ID.nunique()
+		    
+		    # calcs the % by dividing the number of registered students per course by total number of students
+		    percentages = (courseFreq/numStudents)*100
+		    
+		    # sort the Series by highest to lowest percentage
+		    percentages.sort(ascending=False)
+
+		    # limit the list of courses to the top 10
+		    capped_percentages = percentages.head(10)
+
+		    # list of courses
+		    courses = capped_percentages.index.values
+		    
+		    # list of percentages
+		    list_percent = capped_percentages.tolist()
+
+		    # combine them back into a dataframe
+		    capped_percents = pd.DataFrame({'courseNum': courses, 'Percent': list_percent})
+
+		    return capped_percents
+
+
+	def render():
+
+		def addPercentSymbol():
+			"""
+		    takes a list of the percentages and returns a list of the rounded #s with
+		    the percent symbol
+		    """
+
+		    list_percentages = []
+		    for element in list_percent:
+		        list_percentages.append(str(int(element))+'%')
+
+		    return list_percentages
+
+		def df_to_list(df):
+		    """
+		    takes a dataframe and splits all the columns into separate lists
+		    """
+
+		    df_list = []
+		    header_list = list(df)
+		    for header in header_list:
+		        df_list.append(df[header].tolist())
+
+		    return df_lis
+
+
+		def plot(lists):
+			"""
+			uses plotly to display the appropriate graph
+			"""
