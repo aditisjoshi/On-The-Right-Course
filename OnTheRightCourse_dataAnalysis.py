@@ -236,7 +236,7 @@ class CourseDF(objet):
 		def df_to_list(df):
 		    """
 		    takes a dataframe and splits all the columns into separate lists
-		    """
+		   / """
 
 		    df_list = []
 		    header_list = list(df)
