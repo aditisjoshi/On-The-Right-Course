@@ -91,7 +91,7 @@ def get_df(file_name):
     semester = course_time(academicStatus,academicYear)
 
     df = pd.DataFrame({'gradStatus': gradStatus, 'gradYear': gradYear, 'ID': ID, 'academicYear': academicYear, 'gender': gender, 'semester': semester, 'major': major, 'courseNum': courseNum, 'courseSect': courseSect, 'courseTitle': courseTitle, 'professor': professor})
-
+    print df
     return df
 
 
@@ -101,7 +101,8 @@ def major_filter(df, major):
     undefined at any point, the function will take in the first major it finds
     for that ID 
 
-    ['Undeclared              ' 
+    MAJORS SYNTAX
+     ['Undeclared              ' 
      'Mechanical Engineering  '
      'Engineering             '
      'Undeclared              Systems                 '
@@ -131,7 +132,6 @@ def major_filter(df, major):
      'Engineering             Robotics                '
      'Exchange Student        Computing               '
      "Electr'l & Computer EngrRobotics                "]
-
     """
 
     # all majors that they can list from: ME, ECE, E:C, E:Robo, E:Bio, E:MatSci, E:Design, E:Systems
