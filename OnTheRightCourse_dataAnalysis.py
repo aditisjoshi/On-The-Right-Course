@@ -190,7 +190,7 @@ class Filter(object):
         self.sem = sem
         self.major = major 
 
-    def capped_parcent(self):
+    def capped_percent(self):
         """
         NEED TO MAKE SURE THE VALUES OUTPUT IN FULL DF: INCLUDES THE COURSE TITLE
         """
@@ -226,24 +226,26 @@ class Filter(object):
         Filters the data by a specified semester and outputs a df that 
         contains data for only that semester
         """
-        pass
+        self.df = self.df[self.df.sem == self.sem]
 
-        # semCourses = 
-
-        return df
-
+        return self.df
 
     def majorFilter(self):
+        """
+        Filters the data by a specified major and outputs a df that 
+        contains data for only that major
+        """
         self.df = self.df[self.df.major == self.major]
 
         return self.df
 
-
     def filter(self):
-        if sem not none:
-            semFilter(sem)
-        if major not none:
-            majorFilter(major)
+        if self.sem not none:
+            semFilter()
+        if self.major not none:
+            majorFilter()
+
+        self.df = capped_percent()
 
         return self.df
 
