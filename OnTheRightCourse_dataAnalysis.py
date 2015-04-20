@@ -185,7 +185,7 @@ class Filter(object):
     end goal is to get the appropriate df from the queried order of filtering
     """
 
-    def __init__(self, df, sem=none, major=none):
+    def __init__(self, df, sem=None, major=None):
         self.df = df
         self.sem = sem
         self.major = major 
@@ -240,9 +240,9 @@ class Filter(object):
         return self.df
 
     def filter(self):
-        if self.sem not none:
+        if self.sem not None:
             semFilter()
-        if self.major not none:
+        if self.major not None:
             majorFilter()
 
         self.df = capped_percent()
