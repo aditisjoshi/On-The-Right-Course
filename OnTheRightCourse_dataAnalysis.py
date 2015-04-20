@@ -54,199 +54,235 @@ def get_df(file_name):
             courseTitle.append(courseData[10] + courseData[11]) # includes subtitle
             professor.append(courseData[11])
 
-    semester = course_time(academicStatus,academicYear)
+    # semester = course_time(academicStatus,academicYear)
 
-    df = pd.DataFrame({'gradStatus': gradStatus, 'gradYear': gradYear, 'ID': ID, 'academicYear': academicYear, 'gender': gender, 'semester': semester, 'major': major, 'courseNum': courseNum, 'courseSect': courseSect, 'courseTitle': courseTitle, 'professor': professor})
-    print df
+    df = pd.DataFrame({'gradStatus': gradStatus, 'gradYear': gradYear, 'ID': ID, 'academicYear': academicYear, 'gender': gender, 'academicStatus': academicStatus, 'major': major, 'courseNum': courseNum, 'courseSect': courseSect, 'courseTitle': courseTitle, 'professor': professor})
+
     return df
 
+class CourseDF(object):
+    """ 
+    class creates the dataframe that contains the cleaning and 
+    filtering functions
+    """
 
-class CourseDF(objet):
-	""" 
-	class creates the dataframe that contains the filtering functions
-	"""
+    def __init__(self, df):
+        self.df = df
 
-	
-	def dataCleaning(df):
-		semLabel(df)
-		majorAssignment(df)
+    def semLabel(self):
+        """
+        takes the df and goes row by row to determine the semester the
+        course was registered for
+        returns: df that has the semesters labeled from 1-4.5
+        """
+       
+        # relabeling semester row by row
+        for i in range(len(self.df.index)):
+            status = self.df.loc[i,'academicStatus']
+            year = self.df.loc[i,'academicYear']
+            if (status=='TF') or (status=='FF'):
+                sem = 1.0
+                # print sem
+            elif status=='FR':
+                sem = 1.5
+            elif status=='SO' and ('FA' in year):
+                sem = 2.0
+            elif status=='SO' and ('SP' in year):
+                sem = 2.5
+            elif status=='JR' and ('FA' in year):
+                sem = 3.0
+            elif status=='JR' and ('SP' in year):
+                sem = 3.5
+            elif status=='SR' and ('FA' in year):
+                sem = 4.0
+            elif status=='SR' and ('SP' in year):
+                sem = 4.5
+            else:
+                sem = np.nan
 
+            # overwrite the academicStatus to use our numbering convention (1-4.5)
+            self.df.loc[i,'academicStatus'] = sem
 
-		def semLabel(academicStatus,academicYear):
-			"""
-		    academicStatus: list denoting freshman, sophomore, junior, and senior status
-		    academicYear: list denoting semester based off year courses are taken
-		    returns: course_semester_taken, which is a list of tuples with courseNumbers 
-		    being paired with the semester they are taken
-		    """
+        return self.df
 
-		    # Calculating semester and paring courses with semester
-		    course_semester_taken = []
-		    for i in range(len(academicStatus)):
-		        if (academicStatus[i]=='TF') or (academicStatus[i]=='FF'):
-		            course_semester_taken.append(1.0)
-		        elif academicStatus[i]=='FR':
-		            course_semester_taken.append(1.5)
-		        elif academicStatus[i]=='SO' and ('FA' in academicYear[i]):
-		            course_semester_taken.append(2.0)
-		        elif academicStatus[i]=='SO' and ('SP' in academicYear[i]):
-		            course_semester_taken.append(2.5)
-		        elif academicStatus[i]=='JR' and ('FA' in academicYear[i]):
-		            course_semester_taken.append(3.0)
-		        elif academicStatus[i]=='JR' and ('SP' in academicYear[i]):
-		            course_semester_taken.append(3.5)
-		        elif academicStatus[i]=='SR' and ('FA' in academicYear[i]):
-		            course_semester_taken.append(4.0)
-		        elif academicStatus[i]=='SR' and ('SP' in academicYear[i]):
-		            course_semester_taken.append(4.5)
-		        else:
-		            course_semester_taken.append(np.nan)
+    def majorAssignment(self):
+        """
+        this method takes in each student's ID and their major. If their major is 
+        undefined at any point, the function will take in the first major it finds
+        for that ID 
 
-		    return course_semester_taken
+        MAJORS SYNTAX
+         ['Undeclared              ' 
+         'Mechanical Engineering  '
+         'Engineering             '
+         'Undeclared              Systems                 '
+         'Engineering             Systems                 '
+         'Undeclared              Computing               '
+         'Engineering             Computing               '
+         'Undeclared              Materials Science       '
+         'Mechanical Engineering  Materials Science       '
+         'Engineering             Materials Science       '
+         'Mechanical Engineering  Computing               '
+         'Undeclared              Bioengineering          '
+         'Engineering             Bioengineering          '
+         "Electr'l & Computer Engr"
+         'Undeclared              Self Designed           '
+         'Engineering             Self Designed           '
+         'Mechanical Engineering  Bioengineering          '
+         "Electr'l & Computer EngrComputing               "
+         "Electr'l & Computer EngrSystems                 "
+         'Mechanical Engineering  Systems                 '
+         'Mechanical Engineering  Self Designed           '
+         "Electr'l & Computer EngrSelf Designed           "
+         'Undeclared              Design                  '
+         'Mechanical Engineering  Design                  '
+         'Engineering             Design                  '
+         'Undeclared              Robotics                '
+         'Mechanical Engineering  Robotics                '
+         'Engineering             Robotics                '
+         'Exchange Student        Computing               '
+         "Electr'l & Computer EngrRobotics                "]
+        """
 
+        # # all majors that they can list from: ME, ECE, E:C, E:Robo, E:Bio, E:MatSci, E:Design, E:Systems
+        # major_convert = {'ME': 'Mechanical Engineering  ', 'ECE': "Electr'l & Computer Engr", 'E:C': 'Engineering             Computing               ', 'E:Robo': 'Engineering             Robotics                ', 'E:Bio': 'Engineering             Bioengineering          ', 'E:MatSci': 'Engineering             Materials Science       ', 'E:Design': 'Engineering             Design                  ', 'E:Systems': 'Engineering             Systems                 '}
+        # major = major_convert[self.df.col.major]
 
-	    def majorAssignment(df):
-			"""
-		    this method takes in each student's ID and their major. If their major is 
-		    undefined at any point, the function will take in the first major it finds
-		    for that ID 
+        # finds all the unique ids and all ids
+        uniqueIDs = self.df.ID.unique()
+        uniquemajors = self.df.major.unique()
 
-		    MAJORS SYNTAX
-		     ['Undeclared              ' 
-		     'Mechanical Engineering  '
-		     'Engineering             '
-		     'Undeclared              Systems                 '
-		     'Engineering             Systems                 '
-		     'Undeclared              Computing               '
-		     'Engineering             Computing               '
-		     'Undeclared              Materials Science       '
-		     'Mechanical Engineering  Materials Science       '
-		     'Engineering             Materials Science       '
-		     'Mechanical Engineering  Computing               '
-		     'Undeclared              Bioengineering          '
-		     'Engineering             Bioengineering          '
-		     "Electr'l & Computer Engr"
-		     'Undeclared              Self Designed           '
-		     'Engineering             Self Designed           '
-		     'Mechanical Engineering  Bioengineering          '
-		     "Electr'l & Computer EngrComputing               "
-		     "Electr'l & Computer EngrSystems                 "
-		     'Mechanical Engineering  Systems                 '
-		     'Mechanical Engineering  Self Designed           '
-		     "Electr'l & Computer EngrSelf Designed           "
-		     'Undeclared              Design                  '
-		     'Mechanical Engineering  Design                  '
-		     'Engineering             Design                  '
-		     'Undeclared              Robotics                '
-		     'Mechanical Engineering  Robotics                '
-		     'Engineering             Robotics                '
-		     'Exchange Student        Computing               '
-		     "Electr'l & Computer EngrRobotics                "]
-		    """
+        # find the start and end indices of the unique IDs 
+        for idNum in uniqueIDs:
+            IDindex = self.df[self.df['ID']==idNum].index.tolist()
+            startID = IDindex[0]
+            endID = IDindex[-1]
+            # find the last updated major of the student
+            latestMajor = self.df['major'][endID]
+            # change all previous majors to be the same as last updated major
+            self.df.loc[startID:endID+1, 'major'] = latestMajor
 
-		    # all majors that they can list from: ME, ECE, E:C, E:Robo, E:Bio, E:MatSci, E:Design, E:Systems
-		    major_convert = {'ME': 'Mechanical Engineering  ', 'ECE': "Electr'l & Computer Engr", 'E:C': 'Engineering             Computing               ', 'E:Robo': 'Engineering             Robotics                ', 'E:Bio': 'Engineering             Bioengineering          ', 'E:MatSci': 'Engineering             Materials Science       ', 'E:Design': 'Engineering             Design                  ', 'E:Systems': 'Engineering             Systems                 '}
-		    major = major_convert[major]
+        return self.df
 
-		    # finds all the unique ids and all ids
-		    uniqueIDs = df.ID.unique()
-		    uniquemajors = df.major.unique()
+    def oldCourses(self):
+        """ Get rid of courses that are no longer offered from the df by
+        looking at courses that are only offered in the last 4 years
+        """
+        # STILL NEED TO IMPLEMENT
 
-		    # find the start and end indices of the unique IDs 
-		    for idNum in uniqueIDs:
-		        IDindex = df[df['ID']==idNum].index.tolist()
-		        startID = IDindex[0]
-		        endID = IDindex[-1]
-		        # find the last updated major of the student
-		        latestMajor = df['major'][endID]
-		        # change all previous majors to be the same as last updated major
-		        df.loc[startID:endID+1, 'major'] = latestMajor
+        pass
 
-        	return df
+    def dataCleaning(self):
+        self.semLabel()
+        self.majorAssignment()
 
+        return self.df
 
-		def oldCourses(df):
-			""" Get rid of courses that are no longer offered from the df by
-			looking at courses that are only offered in the last 4 years
-			"""
+######################################################### HAVE NOT IMPLEMENTED BELOW
 
+class Filter(object):
+    """
+    end goal is to get the appropriate df from the queried order of filtering
+    """
 
-	def filter(self, sem=none, major=none):
+    def __init__(self, df, sem=none, major=none):
+        self.df = df
+        self.sem = sem
+        self.major = major 
 
+    def capped_parcent(self):
+        """
+        NEED TO MAKE SURE THE VALUES OUTPUT IN FULL DF: INCLUDES THE COURSE TITLE
+        """
 
-		def semFilter(self,df, sem):
-			"""
-			Filters the data by a specified semester and outputs a df that 
-			contains data for only that semester
-			"""
-			
-			semCourses = 
+        # counts the number of students registered in specified semester
+        numStudents = self.df.ID.nunique()
 
-			return df
+        # count the number of people (all gradYears) registered for a course
+        courseFreq = self.df.groupby('courseNum').ID.nunique()
+        
+        # calcs the % by dividing the number of registered students per course by total number of students
+        percentages = (courseFreq/numStudents)*100
+        
+        # sort the Series by highest to lowest percentage
+        percentages.sort(ascending=False)
 
+        # limit the list of courses to the top 10
+        capped_percentages = percentages.head(10)
 
-		def majorFilter(self,df, major):
-			majorDF = self.df[self.df.major == major]
+        # list of courses
+        courses = capped_percentages.index.values
+        
+        # list of percentages
+        list_percent = capped_percentages.tolist()
 
-			return majorDF
+        # combine them back into a dataframe
+        capped_percents = pd.DataFrame({'courseNum': courses, 'Percent': list_percent})
 
+        return capped_percents
 
-		def capped_parcent(df):
-			# counts the number of students registered in specified semester
-		    numStudents = sem_df.ID.nunique()
+    def semFilter(self):
+        """
+        Filters the data by a specified semester and outputs a df that 
+        contains data for only that semester
+        """
+        pass
 
-		    # count the number of people (all gradYears) registered for a course
-		    courseFreq = sem_df.groupby('courseNum').ID.nunique()
-		    
-		    # calcs the % by dividing the number of registered students per course by total number of students
-		    percentages = (courseFreq/numStudents)*100
-		    
-		    # sort the Series by highest to lowest percentage
-		    percentages.sort(ascending=False)
+        # semCourses = 
 
-		    # limit the list of courses to the top 10
-		    capped_percentages = percentages.head(10)
-
-		    # list of courses
-		    courses = capped_percentages.index.values
-		    
-		    # list of percentages
-		    list_percent = capped_percentages.tolist()
-
-		    # combine them back into a dataframe
-		    capped_percents = pd.DataFrame({'courseNum': courses, 'Percent': list_percent})
-
-		    return capped_percents
-
-
-	def render():
-
-		def addPercentSymbol():
-			"""
-		    takes a list of the percentages and returns a list of the rounded #s with
-		    the percent symbol
-		    """
-
-		    list_percentages = []
-		    for element in list_percent:
-		        list_percentages.append(str(int(element))+'%')
-
-		    return list_percentages
-
-		def df_to_list(df):
-		    """
-		    takes a dataframe and splits all the columns into separate lists
-		   / """
-
-		    df_list = []
-		    header_list = list(df)
-		    for header in header_list:
-		        df_list.append(df[header].tolist())
-
-		    return df_lis
+        return df
 
 
-		def plot(lists):
-			"""
-			uses plotly to display the appropriate graph
-			"""
+    def majorFilter(self):
+        self.df = self.df[self.df.major == self.major]
+
+        return self.df
+
+
+    def filter(self):
+        if sem not none:
+            semFilter(sem)
+        if major not none:
+            majorFilter(major)
+
+        return self.df
+
+######################################################### HAVE NOT IMPLEMENTED BELOW
+
+    def render():
+
+    def addPercentSymbol():
+        """
+        takes a list of the percentages and returns a list of the rounded #s with
+        the percent symbol
+        """
+
+        list_percentages = []
+        for element in list_percent:
+            list_percentages.append(str(int(element))+'%')
+
+        return list_percentages
+
+    def df_to_list(df):
+        """
+        takes a dataframe and splits all the columns into separate lists
+        """
+
+        df_list = []
+        header_list = list(df)
+        for header in header_list:
+            df_list.append(df[header].tolist())
+
+        return df_lis
+
+
+    def plot(lists):
+        """
+        uses plotly to display the appropriate graph
+        """
+        pass
+
+
+if __name__ == '__main__':
+    df = CourseDF(get_df(file_name))
+    print df.dataCleaning().head(20)
