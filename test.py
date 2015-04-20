@@ -87,21 +87,17 @@ class Filter(object):
         # limit the list of courses to the top 10
         # type: series
         capped_percentages = percentages.head(10)
-        # print 'capped_percentages',str(capped_percentages),str(type(capped_percentages))
 
         # list of courses
         # type: list
         courses = capped_percentages.index.values.tolist()
-        # print 'courses',str(type(courses))
-        # print str(courses)
 
         # list of percentages
         # type: list
         list_percent = capped_percentages.tolist()
-        # print 'list_percent',type(list_percent)
-        # print list_percent
 
         # combine them back into a dataframe
+        # type: df
         capped_percents = pd.DataFrame({'courseNum': courses, 'Percent': list_percent})
 
         return capped_percents
