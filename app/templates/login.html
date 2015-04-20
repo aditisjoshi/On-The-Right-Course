@@ -1,0 +1,23 @@
+<!-- extend from base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Major filtering.</h1>
+
+  <form action="/filter" method="post">
+          Major:
+          <select name='major'>
+            <option value="MechE">MechE</option>
+            <option value="ECE">ECE</option>
+            <option value="E:Computing">E:Computing</option>
+            <option value="E:Bio">E:Bio</option>
+            <option value="E:MatSci">E:MatSci</option>
+            <option value="E:Design">E:Design</option>
+            <option value="E:Systems">E:Systems</option>
+          </select>
+
+      <br>
+      <input type='submit' value='submit'>
+  </form>
+
+{% endblock %}
