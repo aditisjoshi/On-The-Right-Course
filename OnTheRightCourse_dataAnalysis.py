@@ -198,7 +198,12 @@ class Filter(object):
         1. find the number of uniqueIDs
         2. find how many unique students are taking the course per semester (series)
         3. convert the values of the series into percentages (still tied to courses)
-        
+        4. sort those percentages from hight to low
+        5. cap at top ten
+        6. put series back into a df by: 
+        courses be the index
+        other columns contain: courseNum, courseTitle, section, 
+
         """
 
         # counts the number of students registered in specified semester
