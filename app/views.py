@@ -13,5 +13,7 @@ def major_filtering():
 @app.route('/filter', methods=['POST'])
 def filter():
     major = (request.form['major'])
+    semester = (request.form['semester'])
     print major
+    print semester
     return render_template('filter.html')
