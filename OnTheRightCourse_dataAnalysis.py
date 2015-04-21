@@ -193,6 +193,7 @@ class Filter(object):
     def capped_percent(self):
         """
         NEED TO MAKE SURE THE VALUES OUTPUT IN FULL DF: INCLUDES THE COURSE TITLE
+        takes in the filtered df and outputs the top ten percentages in a df
         """
 
         # counts the number of students registered in specified semester
@@ -235,6 +236,8 @@ class Filter(object):
         """
         Filters the data by a specified semester and outputs a df that 
         contains data for only that semester
+        returns modified df that only contains info for that specified 
+        semester
         """
         self.df = self.df[self.df.sem == self.sem]
 
@@ -244,16 +247,40 @@ class Filter(object):
         """
         Filters the data by a specified major and outputs a df that 
         contains data for only that major
+        returns modified df that only contains info for that specified 
+        semester
         """
         self.df = self.df[self.df.major == self.major]
 
         return self.df
 
+    def output8Sem(self):
+        """
+        For scenarios (no filter or only majorFilter) in which all 8 sem are displayed,
+        run through semFilter and capped_percent for each sem
+        return all 8 sem in 8 separate dfs
+        """
+
+        return sem1.0DF,sem1.5DF,sem2.0DF,sem2.5DF,sem3.0DF,sem3.5DF,sem4.0DF,sem4.5DF
+
     def filter(self):
-        if self.sem not None:
+        if self.sem != None and self.major != None:
             semFilter()
-        if self.major not None:
             majorFilter()
+            capped_percentages()
+            return self.df
+        elif self.sem != None:
+            semFilter()
+            capped_percentages()
+            return self.df
+        elif self.major != None:
+            # run semester filter for all 8 sem
+            # run major filter for the df that is output
+            # capped_percent for each semester
+            # combine the individual df for each sem
+            majorFilter()
+        else:
+
 
         self.df = capped_percent()
 
@@ -261,7 +288,6 @@ class Filter(object):
 
 ######################################################### HAVE NOT IMPLEMENTED BELOW
 
-    def render():
 
     def addPercentSymbol():
         """
@@ -287,12 +313,19 @@ class Filter(object):
 
         return df_lis
 
-
     def plot(lists):
         """
         uses plotly to display the appropriate graph
         """
         pass
+        
+    def render():
+        for dataFrame in self.df:
+            percent_text = addPercentSymbol(dataFrame)
+            plot_this = df_to_list(dataFrame)
+            url = plot(plot_this)
+
+
 
 
 if __name__ == '__main__':

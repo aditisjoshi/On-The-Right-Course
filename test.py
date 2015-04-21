@@ -69,12 +69,12 @@ class Filter(object):
         # counts the number of students registered in specified semester
         # type: integer
         numStudents = self.df.ID.nunique()
-        # print 'numStudents',str(numStudents)
+        print 'numStudents',str(numStudents)
 
         # count the number of people (all gradYears) registered for a course
         # type: series (index is courseNum; value is number of students)
         courseFreq = self.df.groupby('courseNum').ID.nunique()
-        # print 'courseFreq',str(courseFreq),str(type(courseFreq))
+        print 'courseFreq',str(courseFreq),str(type(courseFreq))
 
         # calcs the % by dividing the number of registered students per course by total number of students
         # type: series
@@ -95,6 +95,11 @@ class Filter(object):
         # list of percentages
         # type: list
         list_percent = capped_percentages.tolist()
+
+        """
+        combine the lists of courses and percentages into a dictionary
+        go back into the main df and find all those top ten courses
+        """
 
         # combine them back into a dataframe
         # type: df
