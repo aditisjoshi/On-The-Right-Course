@@ -1,3 +1,8 @@
+@font-face {
+  font-family: Liberator;
+  src: url('fonts/Liberator.ttf');
+}
+
 /*Base structure*/
 html, body {
   height: 100%;
@@ -8,6 +13,8 @@ html, body {
 body {
   text-align: center;
   color: rgb(0,135,198);
+  font-family: Liberator;
+  font-size: 30px;
 }
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
@@ -21,7 +28,7 @@ body {
   min-height: 100%;
 }
 .site-wrapper-inner {
-  background-color:rgba(0,0,0,0.5);
+  background-color:rgba(0,0,0,0.7);
   display: table-cell;
   vertical-align: top; 
 }
@@ -30,4 +37,12 @@ body {
   /* Start the vertical centering */
 .site-wrapper-inner {
   vertical-align: middle;
+}
+
+#subtitle {
+  margin-top: -70px;
+  font-size: 20px;
+  margin-right: 100px;
+  margin-left: 100px;
+  font-family: serif;
 }
