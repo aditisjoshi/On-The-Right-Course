@@ -235,6 +235,8 @@ class Filter(object):
 
         return capped_percents
 
+        # return self.df
+
     def semFilter(self):
         """
         Filters the data by a specified semester and outputs a df that 
@@ -269,19 +271,10 @@ class Filter(object):
 
         for element in semList:
             self.sem = element
-            dfList.append(semFilter())
-        
-        # # use template to create 8 separate lists
-        # sem1.0DF = 
-        # sem1.5DF = 
-        # sem2.0DF = 
-        # sem2.5DF = 
-        # sem3.0DF = 
-        # sem3.5DF = 
-        # sem4.0DF = 
-        # sem4.5DF = 
+            semFilter()
+            capped_percent()
+            dfList.append(self.df)
 
-        # return sem1.0DF,sem1.5DF,sem2.0DF,sem2.5DF,sem3.0DF,sem3.5DF,sem4.0DF,sem4.5DF
         return dfList
 
     def filter(self):
@@ -295,17 +288,15 @@ class Filter(object):
             capped_percentages()
             return self.df
         elif self.major != None:
-            # run semester filter for all 8 sem
-            # run major filter for the df that is output
-            # capped_percent for each semester
-            # combine the individual df for each sem
             eightDFs = output8Sem()
+            filteredEightDFs = []
+            # go thru the list of dfs and filter major
             for singleDF in eightDFs:
-                majorFilter(singleDF)
+                singleDF = self.df
+                filteredEightDFs.append(majorFilter())
+            return filteredEightDFs
         else:
-
-
-        self.df = capped_percent()
+            return output8Sem()
 
         return self.df
 
