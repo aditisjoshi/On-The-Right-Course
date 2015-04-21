@@ -188,7 +188,10 @@ class Filter(object):
     def __init__(self, df, sem=None, major=None):
         self.df = df
         self.sem = sem
-        self.major = major 
+        self.major = major
+
+        # eightDFs = self.df
+        # self.eightDFs = eightDFs
 
     def capped_percent(self):
         """
@@ -258,10 +261,28 @@ class Filter(object):
         """
         For scenarios (no filter or only majorFilter) in which all 8 sem are displayed,
         run through semFilter and capped_percent for each sem
-        return all 8 sem in 8 separate dfs
+        return all 8 sem in 8 separate dfs compiled into a list
         """
+        
+        semList = [1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5]
+        dfList = []
 
-        return sem1.0DF,sem1.5DF,sem2.0DF,sem2.5DF,sem3.0DF,sem3.5DF,sem4.0DF,sem4.5DF
+        for element in semList:
+            self.sem = element
+            dfList.append(semFilter())
+        
+        # # use template to create 8 separate lists
+        # sem1.0DF = 
+        # sem1.5DF = 
+        # sem2.0DF = 
+        # sem2.5DF = 
+        # sem3.0DF = 
+        # sem3.5DF = 
+        # sem4.0DF = 
+        # sem4.5DF = 
+
+        # return sem1.0DF,sem1.5DF,sem2.0DF,sem2.5DF,sem3.0DF,sem3.5DF,sem4.0DF,sem4.5DF
+        return dfList
 
     def filter(self):
         if self.sem != None and self.major != None:
@@ -278,7 +299,9 @@ class Filter(object):
             # run major filter for the df that is output
             # capped_percent for each semester
             # combine the individual df for each sem
-            majorFilter()
+            eightDFs = output8Sem()
+            for singleDF in eightDFs:
+                majorFilter(singleDF)
         else:
 
 
@@ -318,7 +341,7 @@ class Filter(object):
         uses plotly to display the appropriate graph
         """
         pass
-        
+
     def render():
         for dataFrame in self.df:
             percent_text = addPercentSymbol(dataFrame)
