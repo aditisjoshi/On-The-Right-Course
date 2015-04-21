@@ -178,7 +178,7 @@ class CourseDF(object):
 
         return self.df
 
-######################################################### HAVE NOT IMPLEMENTED BELOW
+######################################################### CURRENTLY IMPLEMENTING
 
 class Filter(object):
     """
@@ -189,9 +189,6 @@ class Filter(object):
         self.df = df
         self.sem = sem
         self.major = major
-
-        # eightDFs = self.df
-        # self.eightDFs = eightDFs
 
     def capped_percent(self):
         """
@@ -278,27 +275,29 @@ class Filter(object):
         return dfList
 
     def filter(self):
+        # filtered by sem and major at the same time
         if self.sem != None and self.major != None:
             semFilter()
             majorFilter()
             capped_percentages()
             return self.df
+        # filtered by semester only
         elif self.sem != None:
             semFilter()
             capped_percentages()
             return self.df
+        # filtered by major only
         elif self.major != None:
             eightDFs = output8Sem()
             filteredEightDFs = []
             # go thru the list of dfs and filter major
             for singleDF in eightDFs:
-                singleDF = self.df
+                self.df = singleDF
                 filteredEightDFs.append(majorFilter())
             return filteredEightDFs
+        # no filter
         else:
             return output8Sem()
-
-        return self.df
 
 ######################################################### HAVE NOT IMPLEMENTED BELOW
 
