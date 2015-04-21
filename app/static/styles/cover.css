@@ -1,0 +1,33 @@
+/*Base structure*/
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  text-align: center;
+  color: rgb(0,135,198);
+}
+
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+.site-wrapper {
+  background: url('images/cover.jpg'), center;
+  background-size: cover;
+  position: relative;
+  display: table;
+  width: 100%;
+  height: 100%; /* For at least Firefox */
+  min-height: 100%;
+}
+.site-wrapper-inner {
+  background-color:rgba(0,0,0,0.5);
+  display: table-cell;
+  vertical-align: top; 
+}
+
+/*Affix and center*/
+  /* Start the vertical centering */
+.site-wrapper-inner {
+  vertical-align: middle;
+}
