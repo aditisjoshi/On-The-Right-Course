@@ -193,7 +193,12 @@ class Filter(object):
     def capped_percent(self):
         """
         NEED TO MAKE SURE THE VALUES OUTPUT IN FULL DF: INCLUDES THE COURSE TITLE
-        takes in the filtered df and outputs the top ten percentages in a df
+        takes in the semester filtered df and outputs the top ten percentages in a df
+        
+        1. find the number of uniqueIDs
+        2. find how many unique students are taking the course per semester (series)
+        3. convert the values of the series into percentages (still tied to courses)
+        
         """
 
         # counts the number of students registered in specified semester
@@ -269,7 +274,7 @@ class Filter(object):
         for element in semList:
             self.sem = element
             semFilter()
-            capped_percent()
+            # capped_percent()
             dfList.append(self.df)
 
         return dfList
@@ -293,11 +298,19 @@ class Filter(object):
             # go thru the list of dfs and filter major
             for singleDF in eightDFs:
                 self.df = singleDF
-                filteredEightDFs.append(majorFilter())
+                majorFilter()
+                capped_percent()
+                filteredEightDFs.append(self.df)
             return filteredEightDFs
         # no filter
         else:
-            return output8Sem()
+            eightDFs = output8Sem()
+            filteredEightDFs = []
+            for singleDF in eightDFs:
+                self.df = singleDF
+                capped_percent()
+                filteredEightDFs.append(self.df)
+            return filteredEightDFs
 
 ######################################################### HAVE NOT IMPLEMENTED BELOW
 
