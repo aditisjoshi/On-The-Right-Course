@@ -234,9 +234,9 @@ class Filter(object):
         # type: df
         capped_percents = pd.DataFrame({'courseNum': courses, 'Percent': list_percent})
 
-        return capped_percents
+        self.df = capped_percents
 
-        # return self.df
+        return self.df
 
     def semFilter(self):
         """
@@ -245,7 +245,7 @@ class Filter(object):
         returns modified df that only contains info for that specified 
         semester
         """
-        self.df = self.df[self.df.sem == self.sem]
+        self.df = self.df[self.df['sem'] == self.major]
 
         return self.df
 
@@ -256,7 +256,7 @@ class Filter(object):
         returns modified df that only contains info for that specified 
         semester
         """
-        self.df = self.df[self.df.major == self.major]
+        self.df = self.df[self.df['major'] == self.major]
 
         return self.df
 
@@ -281,33 +281,33 @@ class Filter(object):
     def filter(self):
         # filtered by sem and major at the same time
         if self.sem != None and self.major != None:
-            semFilter()
-            majorFilter()
-            capped_percentages()
+            self.semFilter()
+            self.majorFilter()
+            self.capped_percent()
             return self.df
         # filtered by semester only
         elif self.sem != None:
-            semFilter()
-            capped_percentages()
+            self.semFilter()
+            self.capped_percent()
             return self.df
         # filtered by major only
         elif self.major != None:
-            eightDFs = output8Sem()
+            eightDFs = self.output8Sem()
             filteredEightDFs = []
             # go thru the list of dfs and filter major
             for singleDF in eightDFs:
                 self.df = singleDF
-                majorFilter()
-                capped_percent()
+                self.majorFilter()
+                self.capped_percent()
                 filteredEightDFs.append(self.df)
             return filteredEightDFs
         # no filter
         else:
-            eightDFs = output8Sem()
+            eightDFs = self.output8Sem()
             filteredEightDFs = []
             for singleDF in eightDFs:
                 self.df = singleDF
-                capped_percent()
+                self.capped_percent()
                 filteredEightDFs.append(self.df)
             return filteredEightDFs
 
@@ -352,5 +352,8 @@ class Filter(object):
 
 
 if __name__ == '__main__':
-    df = CourseDF(get_df(file_name))
-    print df.dataCleaning().head(20)
+    data = CourseDF(get_df(file_name))
+    data = data.dataCleaning()
+    
+    DF = Filter(data,2.5)
+    print DF.filter().head(20)
