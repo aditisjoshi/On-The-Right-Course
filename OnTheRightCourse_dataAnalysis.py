@@ -245,7 +245,7 @@ class Filter(object):
         returns modified df that only contains info for that specified 
         semester
         """
-        self.df = self.df[self.df['sem'] == self.major]
+        self.df = self.df[self.df['academicStatus'] == self.sem]
 
         return self.df
 
