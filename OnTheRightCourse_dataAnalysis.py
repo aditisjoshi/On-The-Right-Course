@@ -16,7 +16,7 @@ import pandas as pd
 import numpy as np
 
 # Name of data file
-file_name = 'course_enrollments_2002-2014spring_anonymized.csv'
+file_name = 'CourseEnrollmentsFA02-SP15.csv'
 
 def get_df(file_name):
     """
@@ -26,11 +26,8 @@ def get_df(file_name):
     """
 
     # labelling of data lists
-    gradStatus = []
-    gradYear = []
     ID = []
     academicYear = []
-    gender = []
     academicStatus = []
     major = []
     courseNum = []
@@ -42,21 +39,18 @@ def get_df(file_name):
     with open(file_name, 'rb') as csvfile:
         data = csv.reader(csvfile, delimiter=',')
         for courseData in data:
-            gradStatus.append(courseData[0])
-            gradYear.append(courseData[1])
-            ID.append(courseData[2])
-            academicYear.append(courseData[3])
-            gender.append(courseData[4])
-            academicStatus.append(courseData[5])
-            major.append(courseData[6] + courseData[7]) # includes concentration
-            courseNum.append(courseData[8]) # seems to output a ton of spaces after #
-            courseSect.append(courseData[9])
-            courseTitle.append(courseData[10] + courseData[11]) # includes subtitle
-            professor.append(courseData[11])
+            ID.append(courseData[0])
+            academicYear.append(courseData[1])
+            academicStatus.append(courseData[2])
+            major.append(courseData[3] + courseData[4]) # includes concentration
+            courseNum.append(courseData[5]) # seems to output a ton of spaces after #
+            courseSect.append(courseData[6])
+            courseTitle.append(courseData[7] + courseData[8]) # includes subtitle
+            professor.append(courseData[9])
 
     # semester = course_time(academicStatus,academicYear)
 
-    df = pd.DataFrame({'gradStatus': gradStatus, 'gradYear': gradYear, 'ID': ID, 'academicYear': academicYear, 'gender': gender, 'academicStatus': academicStatus, 'major': major, 'courseNum': courseNum, 'courseSect': courseSect, 'courseTitle': courseTitle, 'professor': professor})
+    df = pd.DataFrame({'ID': ID, 'academicYear': academicYear, 'academicStatus': academicStatus, 'major': major, 'courseNum': courseNum, 'courseSect': courseSect, 'courseTitle': courseTitle, 'professor': professor})
 
     return df
 
@@ -355,8 +349,6 @@ class Filter(object):
             percent_text = addPercentSymbol(dataFrame)
             plot_this = df_to_list(dataFrame)
             url = plot(plot_this)
-
-
 
 
 if __name__ == '__main__':
