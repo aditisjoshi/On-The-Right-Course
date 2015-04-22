@@ -174,7 +174,7 @@ class CourseDF(object):
 
 ######################################################### CURRENTLY IMPLEMENTING
 
-class Filter(object):
+class FilterDF(object):
     """
     end goal is to get the appropriate df from the queried order of filtering
     """
@@ -245,9 +245,9 @@ class Filter(object):
         returns modified df that only contains info for that specified 
         semester
         """
-        self.df = self.df[self.df['academicStatus'] == self.sem]
+        df_semFiltered = self.df[self.df['academicStatus'] == self.sem]
 
-        return self.df
+        return df_semFiltered
 
     def majorFilter(self):
         """
@@ -272,9 +272,7 @@ class Filter(object):
 
         for element in semList:
             self.sem = element
-            semFilter()
-            # capped_percent()
-            dfList.append(self.df)
+            dfList.append(self.semFilter())
 
         return dfList
 
@@ -355,5 +353,5 @@ if __name__ == '__main__':
     data = CourseDF(get_df(file_name))
     data = data.dataCleaning()
     
-    DF = Filter(data,major='Mechanical Engineering  ')
+    DF = FilterDF(data,major='Mechanical Engineering  ')
     print DF.filter()
