@@ -184,11 +184,12 @@ class FilterDF(object):
         self.sem = sem
         self.major = major
 
-    def capped_percent(self):
+        # self.singleDF = self.df
+
+    def capped_percent(self, df):
         """
         NEED TO MAKE SURE THE VALUES OUTPUT IN FULL DF: INCLUDES THE COURSE TITLE
         takes in the semester filtered df and outputs the top ten percentages in a df
-        
         1. find the number of uniqueIDs
         2. find how many unique students are taking the course per semester (series)
         3. convert the values of the series into percentages (still tied to courses)
@@ -197,17 +198,16 @@ class FilterDF(object):
         6. put series back into a df by: 
         courses be the index
         other columns contain: courseNum, courseTitle, section, 
-
         """
 
         # counts the number of students registered in specified semester
         # type: integer
-        numStudents = self.df.ID.nunique()
+        numStudents = df.ID.nunique()
         # print 'numStudents',str(numStudents)
 
         # count the number of people (all gradYears) registered for a course
         # type: series (index is courseNum; value is number of students)
-        courseFreq = self.df.groupby('courseNum').ID.nunique()
+        courseFreq = df.groupby('courseTitle').ID.nunique()
         # print 'courseFreq',str(courseFreq),str(type(courseFreq))
 
         # calcs the % by dividing the number of registered students per course by total number of students
@@ -232,33 +232,34 @@ class FilterDF(object):
 
         # combine them back into a dataframe
         # type: df
-        capped_percents = pd.DataFrame({'courseNum': courses, 'Percent': list_percent})
+        capped_percents = pd.DataFrame({'courseTitle': courses, 'Percent': list_percent})
 
-        self.df = capped_percents
+        # df = capped_percents
 
-        return self.df
+        # return self.df
+        return capped_percents
 
-    def semFilter(self):
+    def semFilter(self, df):
         """
         Filters the data by a specified semester and outputs a df that 
         contains data for only that semester
         returns modified df that only contains info for that specified 
         semester
         """
-        df_semFiltered = self.df[self.df['academicStatus'] == self.sem]
+        semDF = df[df['academicStatus'] == self.sem]
 
-        return df_semFiltered
+        return semDF
 
-    def majorFilter(self):
+    def majorFilter(self, df):
         """
         Filters the data by a specified major and outputs a df that 
         contains data for only that major
         returns modified df that only contains info for that specified 
         semester
         """
-        self.df = self.df[self.df['major'] == self.major]
+        majorDF = df[df['major'] == self.major]
 
-        return self.df
+        return majorDF
 
     def output8Sem(self):
         """
@@ -272,20 +273,20 @@ class FilterDF(object):
 
         for element in semList:
             self.sem = element
-            dfList.append(self.semFilter())
+            dfList.append(self.semFilter(self.df))
 
         return dfList
 
     def filter(self):
         # filtered by sem and major at the same time
         if self.sem != None and self.major != None:
-            self.semFilter()
+            self.singleDF = self.semFilter()
             self.majorFilter()
             self.capped_percent()
             return self.df
         # filtered by semester only
         elif self.sem != None:
-            self.semFilter()
+            self.singleDF = self.semFilter()
             self.capped_percent()
             return self.df
         # filtered by major only
@@ -293,8 +294,8 @@ class FilterDF(object):
             eightDFs = self.output8Sem()
             filteredEightDFs = []
             # go thru the list of dfs and filter major
-            for singleDF in eightDFs:
-                self.df = singleDF
+            for element in eightDFs:
+                self.singleDF = element
                 self.majorFilter()
                 self.capped_percent()
                 filteredEightDFs.append(self.df)
@@ -303,8 +304,8 @@ class FilterDF(object):
         else:
             eightDFs = self.output8Sem()
             filteredEightDFs = []
-            for singleDF in eightDFs:
-                self.df = singleDF
+            for element in eightDFs:
+                self.singleDF = element
                 self.capped_percent()
                 filteredEightDFs.append(self.df)
             return filteredEightDFs
