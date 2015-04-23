@@ -142,7 +142,7 @@ class CourseDF(object):
         # major_convert = {'ME': 'Mechanical Engineering  ', 'ECE': "Electr'l & Computer Engr", 'E:C': 'Engineering             Computing               ', 'E:Robo': 'Engineering             Robotics                ', 'E:Bio': 'Engineering             Bioengineering          ', 'E:MatSci': 'Engineering             Materials Science       ', 'E:Design': 'Engineering             Design                  ', 'E:Systems': 'Engineering             Systems                 '}
         # major = major_convert[self.df.col.major]
 
-        # finds all the unique ids and all ids
+        # finds all the unique ids of all ids
         uniqueIDs = self.df.ID.unique()
         uniquemajors = self.df.major.unique()
 
@@ -166,9 +166,28 @@ class CourseDF(object):
 
         pass
 
+    def courseNames(self):
+        """
+        make courses of the same courseNum have the first courseTitle assciated
+        with it
+        """
+
+        # start dictionary that pairs courseNum with courseTitle
+        NumTitlePair = {}
+        # find all the unique courseNums and put
+        uniqueCourseNum = self.df.courseNum.unique()
+        # print uniqueCourseNum
+        for i in range(len(self.df.index)):
+            if self.df.courseNum[i] in NumTitlePair:
+                self.df.courseTitle[i] = NumTitlePair[self.df.courseNum[i]]
+            else:
+                
+
+
     def dataCleaning(self):
         self.semLabel()
         self.majorAssignment()
+        self.courseNames()
 
         return self.df
 
@@ -341,5 +360,5 @@ if __name__ == '__main__':
     data = CourseDF(get_df(file_name))
     cleanDF = data.dataCleaning()
     
-    testFilter = FilterDF(cleanDF,major='Mechanical Engineering  ')
-    print testFilter.filter()
+    # testFilter = FilterDF(cleanDF,major='Mechanical Engineering  ')
+    # print testFilter.filter()
