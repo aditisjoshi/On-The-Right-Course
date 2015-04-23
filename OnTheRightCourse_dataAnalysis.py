@@ -234,9 +234,6 @@ class FilterDF(object):
         # type: df
         capped_percents = pd.DataFrame({'courseTitle': courses, 'Percent': list_percent})
 
-        # df = capped_percents
-
-        # return self.df
         return capped_percents
 
     def semFilter(self, df):
@@ -280,34 +277,24 @@ class FilterDF(object):
     def filter(self):
         # filtered by sem and major at the same time
         if self.sem != None and self.major != None:
-            self.singleDF = self.semFilter()
-            self.majorFilter()
-            self.capped_percent()
-            return self.df
+            return self.capped_percent(self.majorFilter(self.semFilter(self.df)))
         # filtered by semester only
         elif self.sem != None:
-            self.singleDF = self.semFilter()
-            self.capped_percent()
-            return self.df
+            return self.capped_percent(self.semFilter(self.df))
         # filtered by major only
         elif self.major != None:
             eightDFs = self.output8Sem()
             filteredEightDFs = []
             # go thru the list of dfs and filter major
-            for element in eightDFs:
-                self.singleDF = element
-                self.majorFilter()
-                self.capped_percent()
-                filteredEightDFs.append(self.df)
+            for element in eightDFs:      
+                filteredEightDFs.append(self.capped_percent(majorFilter(element)))
             return filteredEightDFs
         # no filter
         else:
             eightDFs = self.output8Sem()
             filteredEightDFs = []
             for element in eightDFs:
-                self.singleDF = element
-                self.capped_percent()
-                filteredEightDFs.append(self.df)
+                filteredEightDFs.append(self.capped_percent(element))
             return filteredEightDFs
 
 ######################################################### HAVE NOT IMPLEMENTED BELOW
@@ -352,7 +339,7 @@ class FilterDF(object):
 
 if __name__ == '__main__':
     data = CourseDF(get_df(file_name))
-    data = data.dataCleaning()
+    cleanDF = data.dataCleaning()
     
-    DF = FilterDF(data,major='Mechanical Engineering  ')
-    print DF.filter()
+    testFilter = FilterDF(cleanDF,major='Mechanical Engineering  ')
+    print testFilter.filter()
