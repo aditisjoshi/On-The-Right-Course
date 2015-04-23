@@ -178,14 +178,12 @@ class CourseDF(object):
         NumTitlePair = {}
         # find all the unique courseNums and put
         uniqueCourseNum = self.df.courseNum.unique()
-        # print uniqueCourseNum
+        
         for i in range(len(self.df.index)):
             if self.df.courseNum[i] in NumTitlePair:
                 self.df.courseTitle[i] = NumTitlePair[self.df.courseNum[i]]
             else:
                 NumTitlePair[self.df.courseNum[i]] = self.df.courseTitle[i]
-
-        print NumTitlePair
 
         return self.df
 
