@@ -179,7 +179,8 @@ class CourseDF(object):
         # find all the unique courseNums and put
         uniqueCourseNum = self.df.courseNum.unique()
         
-        for i in range(len(self.df.index)):
+        # run thru df backwards and assign the latest courseTitle to the courseNum
+        for i in reversed(range(len(self.df.index))):
             if self.df.courseNum[i] in NumTitlePair:
                 self.df.courseTitle[i] = NumTitlePair[self.df.courseNum[i]]
             else:
