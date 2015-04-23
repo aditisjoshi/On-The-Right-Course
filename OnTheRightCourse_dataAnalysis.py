@@ -287,7 +287,7 @@ class FilterDF(object):
             filteredEightDFs = []
             # go thru the list of dfs and filter major
             for element in eightDFs:      
-                filteredEightDFs.append(self.capped_percent(majorFilter(element)))
+                filteredEightDFs.append(self.capped_percent(self.majorFilter(element)))
             return filteredEightDFs
         # no filter
         else:
