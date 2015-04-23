@@ -362,5 +362,5 @@ if __name__ == '__main__':
     data = CourseDF(get_df(file_name))
     cleanDF = data.dataCleaning()
     
-    testFilter = FilterDF(cleanDF,3.5,'Mechanical Engineering  ')
+    testFilter = FilterDF(cleanDF,3.5)
     print testFilter.filter()
