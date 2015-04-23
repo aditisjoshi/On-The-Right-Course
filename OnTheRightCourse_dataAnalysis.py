@@ -176,13 +176,15 @@ class CourseDF(object):
         NumTitlePair = {}
         # find all the unique courseNums and put
         uniqueCourseNum = self.df.courseNum.unique()
-        # print uniqueCourseNum
-        for i in range(len(self.df.index)):
+        
+        # run thru df backwards and assign the latest courseTitle to the courseNum
+        for i in reversed(range(len(self.df.index))):
             if self.df.courseNum[i] in NumTitlePair:
                 self.df.courseTitle[i] = NumTitlePair[self.df.courseNum[i]]
             else:
-                
+                NumTitlePair[self.df.courseNum[i]] = self.df.courseTitle[i]
 
+        return self.df
 
     def dataCleaning(self):
         self.semLabel()
@@ -360,5 +362,5 @@ if __name__ == '__main__':
     data = CourseDF(get_df(file_name))
     cleanDF = data.dataCleaning()
     
-    # testFilter = FilterDF(cleanDF,major='Mechanical Engineering  ')
-    # print testFilter.filter()
+    testFilter = FilterDF(cleanDF,major='Mechanical Engineering  ')
+    print testFilter.filter()
