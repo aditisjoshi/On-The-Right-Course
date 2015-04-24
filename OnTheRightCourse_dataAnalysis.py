@@ -45,7 +45,7 @@ def get_df(file_name):
             major.append(courseData[3] + courseData[4]) # includes concentration
             courseNum.append(courseData[5]) # seems to output a ton of spaces after #
             courseSect.append(courseData[6])
-            courseTitle.append(courseData[7] + courseData[8]) # includes subtitle
+            courseTitle.append(courseData[7].strip() + ' ' + courseData[8].strip()) # includes subtitle
             professor.append(courseData[9])
 
     # semester = course_time(academicStatus,academicYear)
@@ -193,7 +193,6 @@ class CourseDF(object):
 
         return self.df
 
-######################################################### CURRENTLY IMPLEMENTING
 
 class FilterDF(object):
     """
@@ -204,8 +203,6 @@ class FilterDF(object):
         self.df = df
         self.sem = sem
         self.major = major
-
-        # self.singleDF = self.df
 
     def capped_percent(self, df):
         """
@@ -318,9 +315,13 @@ class FilterDF(object):
                 filteredEightDFs.append(self.capped_percent(element))
             return filteredEightDFs
 
-######################################################### HAVE NOT IMPLEMENTED BELOW
+######################################################### IMPLEMENTING BELOW
 
+class RenderDF(object):
 
+    def __init__(self, df):
+        self.df = df
+    
     def addPercentSymbol():
         """
         takes a list of the percentages and returns a list of the rounded #s with
@@ -333,25 +334,35 @@ class FilterDF(object):
 
         return list_percentages
 
-    def df_to_list(df):
+    def df_to_list(self):
         """
         takes a dataframe and splits all the columns into separate lists
         """
 
         df_list = []
-        header_list = list(df)
+        header_list = list(self.df)
         for header in header_list:
-            df_list.append(df[header].tolist())
+            df_list.append(self.df[header].tolist())
 
-        return df_lis
+        return df_list
 
-    def plot(lists):
+    def plot(self,x,y):
         """
-        uses plotly to display the appropriate graph
+        set up the plot for plotly
         """
-        pass
+        data = Data([Bar(x = x, y = y, name='Sem 4.5', orientation='h')])
 
-    def render():
+        fig = Figure(data=data, layout=layout)
+        plot_url = py.plot(fig)
+        barmode='group'
+        )
+    fig = Figure(data=data, layout=layout)
+    plot_url = py.plot(fig, filename='grouped-bar')
+
+    def render(self):
+        """
+        uses plotly to display the appropriate graph/ url to graph
+        """
         for dataFrame in self.df:
             percent_text = addPercentSymbol(dataFrame)
             plot_this = df_to_list(dataFrame)
@@ -361,6 +372,6 @@ class FilterDF(object):
 if __name__ == '__main__':
     data = CourseDF(get_df(file_name))
     cleanDF = data.dataCleaning()
-    
-    testFilter = FilterDF(cleanDF)
-    print testFilter.filter()
+    print cleanDF
+    # testFilter = FilterDF(cleanDF)
+    # print testFilter.filter()
