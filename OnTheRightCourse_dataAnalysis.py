@@ -353,11 +353,7 @@ class RenderDF(object):
         data = Data([Bar(x = x, y = y, name='Sem 4.5', orientation='h')])
 
         fig = Figure(data=data, layout=layout)
-        plot_url = py.plot(fig)
-        barmode='group'
-        )
-    fig = Figure(data=data, layout=layout)
-    plot_url = py.plot(fig, filename='grouped-bar')
+        plot_url = py.plot(fig, filename='grouped-bar')
 
     def render(self):
         """
