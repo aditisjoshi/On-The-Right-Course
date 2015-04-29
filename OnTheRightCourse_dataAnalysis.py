@@ -366,7 +366,7 @@ class RenderDF(object):
         percentages = self.df['Percent'].tolist()
 
         # plotting horizontal bars
-        plt.barh(y_pos, performance, align='center', alpha=0.4)
+        plt.barh(courseTitle, percentages, align='center', alpha=0.4)
 
 
 
@@ -386,4 +386,3 @@ if __name__ == '__main__':
     # print cleanDF
     testFilter = FilterDF(cleanDF, sem=2.5, major="Electr'l & Computer Engr")
     print testFilter.filter()
-    print type(testFilter.filter())
