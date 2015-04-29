@@ -10,10 +10,11 @@ based on major and/ or semester.
 """
 
 import csv
-import plotly.plotly as py
-from plotly.graph_objs import *
+# import plotly.plotly as py
+# from plotly.graph_objs import *
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Name of data file
 file_name = 'CourseEnrollmentsFA02-SP15.csv'
@@ -329,52 +330,60 @@ class RenderDF(object):
     def __init__(self, df):
         self.df = df
     
-    def addPercentSymbol():
+    # def df_to_list(self):
+    #     """
+    #     takes a dataframe and splits all the columns into separate lists
+    #     """
+
+    #     df_list = []
+    #     header_list = list(self.df)
+    #     for header in header_list:
+    #         df_list.append(self.df[header].tolist())
+
+    #     return df_list
+    
+    def addPercentSymbol(self):
         """
         takes a list of the percentages and returns a list of the rounded #s with
         the percent symbol
         """
 
+        list_percent = self.df['Percent'].tolist()
         list_percentages = []
         for element in list_percent:
             list_percentages.append(str(int(element))+'%')
 
         return list_percentages
 
-    def df_to_list(self):
-        """
-        takes a dataframe and splits all the columns into separate lists
-        """
-
-        df_list = []
-        header_list = list(self.df)
-        for header in header_list:
-            df_list.append(self.df[header].tolist())
-
-        return df_list
 
     def plot(self,x,y):
         """
         set up the plot for plotly
         """
-        data = Data([Bar(x = x, y = y, name='Sem 4.5', orientation='h')])
 
-        fig = Figure(data=data, layout=layout)
-        plot_url = py.plot(fig, filename='grouped-bar')
+        # data lists for plotting        
+        courseTitle = self.df['courseTitle'].tolist()
+        percentages = self.df['Percent'].tolist()
 
-    def render(self):
-        """
-        uses plotly to display the appropriate graph/ url to graph
-        """
-        for dataFrame in self.df:
-            percent_text = addPercentSymbol(dataFrame)
-            plot_this = df_to_list(dataFrame)
-            url = plot(plot_this)
+        # plotting horizontal bars
+        plt.barh(y_pos, performance, align='center', alpha=0.4)
+
+
+
+    # def render(self):
+    #     """
+    #     uses plotly to display the appropriate graph/ url to graph
+    #     """
+    #     for dataFrame in self.df:
+    #         percent_text = addPercentSymbol(dataFrame)
+    #         plot_this = df_to_list(dataFrame)
+    #         url = plot(plot_this)
 
 
 if __name__ == '__main__':
     data = CourseDF(get_df(file_name))
     cleanDF = data.dataCleaning()
-    print cleanDF
-    # testFilter = FilterDF(cleanDF)
-    # print testFilter.filter()
+    # print cleanDF
+    testFilter = FilterDF(cleanDF, sem=2.5, major="Electr'l & Computer Engr")
+    print testFilter.filter()
+    print type(testFilter.filter())
