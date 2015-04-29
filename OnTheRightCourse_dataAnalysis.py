@@ -166,6 +166,13 @@ class CourseDF(object):
 
         pass
 
+    def AHScount(self):
+        """
+        count the number of AHS classes taken in a sem by a student
+        """
+
+        pass
+
     def courseNames(self):
         """
         make courses of the same courseNum have the first courseTitle assciated
