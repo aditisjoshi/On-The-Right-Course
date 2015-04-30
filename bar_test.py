@@ -6,23 +6,33 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-# Example data
+#### Example data
 people = ('Tom', 'Dick', 'Harry', 'Slim', 'Jim')
 y_pos = np.arange(len(people))
 performance = 3 + 10 * np.random.rand(len(people))
 error = np.random.rand(len(people))
 
-# Sets up the figure
+#### Sets up the figure
 fig, ax1 = plt.subplots(figsize=(9, 7))
+ax1.spines['left'].set_visible(False)
+ax1.spines['right'].set_visible(False)
+ax1.spines['bottom'].set_visible(False)
+ax1.spines['top'].set_visible(False)
+# Pushes the left border/labels out
+ax1.spines['left'].set_position(('outward', 5))
+# plt.axis('off')
 
-# Plots the horizontal bars
+#### Plots the horizontal bars
 # rects = ax1.barh(pos, rankings, align='center', height=0.5, color='m')
 rects = ax1.barh(y_pos, performance, align='center', color='r')
 
-# Adds the appropriate labeling of data points
-plt.yticks(y_pos, people)
+#### Adds the appropriate labeling of data points
+plt.xticks([])
+plt.yticks(y_pos,people)
+ax1.tick_params(right="off")
+ax1.tick_params(left="off")
 
-# Makes the axes labels
+#### Makes the axes labels
 # plt.xlabel('Performance')
 # plt.title('How fast do you want to go today?')
 
@@ -50,7 +60,7 @@ for rect in rects:
     #     suffix = suffixes[lastDigit]
 
     rankStr = str(width) #+ suffix
-    if (width < 5):        # The bars aren't wide enough to print the ranking inside
+    if (width < 2):        # The bars aren't wide enough to print the ranking inside
         xloc = width + 1   # Shift the text to the right side of the right edge
         clr = 'black'      # Black against white background
         align = 'left'
@@ -63,5 +73,9 @@ for rect in rects:
     yloc = rect.get_y()+rect.get_height()/2.0
     ax1.text(xloc, yloc, rankStr, horizontalalignment=align,
             verticalalignment='center', color=clr, weight='bold')
+
+
+#### Saves the plot to a file name
+# plt.savefig("plot.png",bbox_inches='tight')
 
 plt.show()
