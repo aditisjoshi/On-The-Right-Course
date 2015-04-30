@@ -13,7 +13,7 @@ performance = 3 + 10 * np.random.rand(len(people))
 error = np.random.rand(len(people))
 
 #### Sets up the figure
-fig, ax1 = plt.subplots(figsize=(9, 7))
+fig, ax1 = plt.subplots(figsize=(7, 7), facecolor='white')
 ax1.spines['left'].set_visible(False)
 ax1.spines['right'].set_visible(False)
 ax1.spines['bottom'].set_visible(False)
