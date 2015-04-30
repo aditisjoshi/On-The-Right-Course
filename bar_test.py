@@ -24,7 +24,7 @@ ax1.spines['left'].set_position(('outward', 5))
 
 #### Plots the horizontal bars
 # rects = ax1.barh(pos, rankings, align='center', height=0.5, color='m')
-rects = ax1.barh(y_pos, performance, align='center', color='r')
+rects = ax1.barh(y_pos, performance, align='center', color='r', edgecolor='none')
 
 #### Adds the appropriate labeling of data points
 plt.xticks([])
