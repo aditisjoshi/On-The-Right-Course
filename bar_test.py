@@ -76,6 +76,6 @@ for rect in rects:
 
 
 #### Saves the plot to a file name
-# plt.savefig("plot.png",bbox_inches='tight')
+# plt.savefig("plot.png",bbox_inches='tight', transparent=True)
 
 plt.show()
