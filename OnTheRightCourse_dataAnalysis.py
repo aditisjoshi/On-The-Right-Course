@@ -158,6 +158,7 @@ class CourseDF(object):
 
         return self.df
 
+
     def oldCourses(self):
         """ Get rid of courses that are no longer offered from the df by
         looking at courses that are only offered in the last 4 years
@@ -170,8 +171,20 @@ class CourseDF(object):
         """
         count the number of AHS classes taken in a sem by a student
         """
+        # finds all the unique ids of all ids
+        uniqueIDs = self.df.ID.unique()
+        count = 0
+        
+        # loop through the unique ids 
+        for idNum in uniqueIDs:
+            IDindex = self.df[self.df['ID']==idNum].index.tolist()
+            startID = IDindex[0]
+            endID = IDindex[-1]
+            for course in self.df.loc[startID:endID, 'courseNum']:
+                if 'AHSE' in course:
+                    self.df.loc[course] = 'AHSE000' + str(count)
+                    count =+ 1
 
-        pass
 
     def courseNames(self):
         """
@@ -196,6 +209,7 @@ class CourseDF(object):
     def dataCleaning(self):
         self.semLabel()
         self.majorAssignment()
+        self.AHScount()
         self.courseNames()
 
         return self.df
@@ -375,6 +389,5 @@ class RenderDF(object):
 if __name__ == '__main__':
     data = CourseDF(get_df(file_name))
     cleanDF = data.dataCleaning()
-    print cleanDF
     # testFilter = FilterDF(cleanDF)
     # print testFilter.filter()
