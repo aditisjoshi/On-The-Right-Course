@@ -201,7 +201,6 @@ class CourseDF(object):
 
         return self.df
 
-
 class FilterDF(object):
     """
     end goal is to get the appropriate df from the queried order of filtering
@@ -330,54 +329,80 @@ class RenderDF(object):
     def __init__(self, df):
         self.df = df
     
-    # def df_to_list(self):
-    #     """
-    #     takes a dataframe and splits all the columns into separate lists
-    #     """
-
-    #     df_list = []
-    #     header_list = list(self.df)
-    #     for header in header_list:
-    #         df_list.append(self.df[header].tolist())
-
-    #     return df_list
-    
-    def addPercentSymbol(self):
+    def addPercentSymbol(self,percentList):
         """
         takes a list of the percentages and returns a list of the rounded #s with
         the percent symbol
         """
 
-        list_percent = self.df['Percent'].tolist()
+        list_percent = percentList
         list_percentages = []
         for element in list_percent:
             list_percentages.append(str(int(element))+'%')
 
         return list_percentages
 
-
-    def plot(self,x,y):
+    def plot(self):
         """
-        set up the plot for plotly
+        set up the plot for matplotlib
         """
 
-        # data lists for plotting        
+        # Data lists for plotting        
         courseTitle = self.df['courseTitle'].tolist()
+        y_pos = np.arange(len(courseTitle))
         percentages = self.df['Percent'].tolist()
+        prettyPercentages = self.addPercentSymbol(percentages)
 
-        # plotting horizontal bars
-        plt.barh(courseTitle, percentages, align='center', alpha=0.4)
+        ### Set up the figure
+        fig, ax1 = plt.subplots(figsize=(20,15), facecolor='white')
+        # No visible borders
+        ax1.spines['left'].set_visible(False)
+        ax1.spines['right'].set_visible(False)
+        ax1.spines['bottom'].set_visible(False)
+        ax1.spines['top'].set_visible(False)
+        # Pushes the left labels away from bars
+        ax1.spines['left'].set_position(('outward', .25))
+        # Set the color scheme
+        colors=['#D0DD2B','#98C73D', '#00A9E0', '#67CDDC', '#3B3B3D']
 
+        # Plot the horizontal bars
+        rects = plt.barh(y_pos, percentages, align='center', color=colors,
+                         edgecolor='none')
 
+        # Add the appropriate labeling of data points
+        plt.xticks([])
+        plt.yticks(y_pos,prettyPercentages, color='#3B3B3D')
+        plt.tick_params(right="off")
+        plt.tick_params(left="off")
 
-    # def render(self):
-    #     """
-    #     uses plotly to display the appropriate graph/ url to graph
-    #     """
-    #     for dataFrame in self.df:
-    #         percent_text = addPercentSymbol(dataFrame)
-    #         plot_this = df_to_list(dataFrame)
-    #         url = plot(plot_this)
+        # Write in the courseTitle inside each bar
+        for i,rect in enumerate(rects):
+            barWidth = rect.get_width()
+            # print 'width', barWidth
+            # print courseTitle[i], len(courseTitle[i])
+
+            # If bars aren't wide enough to print the title inside
+            if barWidth < (len(courseTitle[i]) + 0.2*barWidth):
+                # Shift the text to the right side of the right edge
+                xloc = barWidth + .25
+                clr = '#3B3B3D'
+                align = 'left'
+            else:
+                # Shift the text to the left side of the right edge
+                xloc = barWidth-.25
+                clr = 'white'
+                align = 'right'
+
+            # Center the text vertically in the bar
+            yloc = rect.get_y()+rect.get_height()/2.0
+            ax1.text(xloc, yloc, courseTitle[i], horizontalalignment=align,
+                     verticalalignment='center', color=clr)
+
+        # Save plot to file
+        plt.savefig("plot.png",bbox_inches='tight', transparent=True,
+                    edgecolor='none')
+
+        plt.show()
 
 
 if __name__ == '__main__':
@@ -385,4 +410,8 @@ if __name__ == '__main__':
     cleanDF = data.dataCleaning()
     # print cleanDF
     testFilter = FilterDF(cleanDF, sem=2.5, major="Electr'l & Computer Engr")
-    print testFilter.filter()
+    # print testFilter.filter()
+
+    plotThis = testFilter.filter()
+    final = RenderDF(plotThis)
+    final.plot()

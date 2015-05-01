@@ -3,7 +3,6 @@ Simple demo of a horizontal bar chart.
 """
 # import matplotlib.pyplot as plt; plt.rcdefaults()
 import numpy as np
-from matplotlib import cm
 import matplotlib.pyplot as plt
 
 
