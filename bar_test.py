@@ -24,25 +24,13 @@ ax1.spines['left'].set_position(('outward', 5))
 colors=['#D0DD2B','#98C73D', '#00A9E0', '#67CDDC', '#3B3B3D']
 
 #### Plots the horizontal bars
-# rects = ax1.barh(pos, rankings, align='center', height=0.5, color='m')
 rects = plt.barh(y_pos, performance, align='center', color=colors, edgecolor='none')
 
 #### Adds the appropriate labeling of data points
 plt.xticks([])
-plt.yticks(y_pos,performance)
+plt.yticks(y_pos,performance, color='#3B3B3D')
 plt.tick_params(right="off")
 plt.tick_params(left="off")
-
-#### Makes the axes labels
-# plt.xlabel('Performance')
-# plt.title('How fast do you want to go today?')
-
-
-
-"""
-For putting labels within the bars
-http://matplotlib.org/examples/pylab_examples/barchart_demo2.html
-"""
 
 # Write in the courseTitle inside each bar
 for i,rect in enumerate(rects):
@@ -66,7 +54,6 @@ for i,rect in enumerate(rects):
     yloc = rect.get_y()+rect.get_height()/2.0
     ax1.text(xloc, yloc, courseTitle[i], horizontalalignment=align,
              verticalalignment='center', color=clr)
-
 
 #### Saves the plot to a file name
 # plt.savefig("plot.png",bbox_inches='tight', transparent=True, edgecolor='none')
