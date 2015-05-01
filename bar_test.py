@@ -6,56 +6,74 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-# Example data
-people = ('Tom', 'Dick', 'Harry', 'Slim', 'Jim')
-y_pos = np.arange(len(people))
-performance = 3 + 10 * np.random.rand(len(people))
-error = np.random.rand(len(people))
+def addPercentSymbol(listConvert):
+    """
+    takes a list of the percentages and returns a list of the rounded #s with
+    the percent symbol
+    """
 
+    list_percent = listConvert
+    list_percentages = []
+    for element in list_percent:
+        list_percentages.append(str(int(element))+'%')
 
-plt.barh(y_pos, performance, align='center', alpha=.75)
+    return list_percentages
 
-# Adds the appropriate labeling of data points
-plt.yticks(y_pos, people)
+#### Data
+courseTitle = ['Tom', 'Dick', 'Harry', 'Slim', 'Jimothy the III of London']
+y_position = np.arange(len(courseTitle))
+print y_position
+y_pos = y_position[::-1]
+print y_pos
+performance = 3 + 10 * np.random.rand(len(courseTitle))
+performanceLabel = addPercentSymbol(performance)
 
-# Makes the axes labels
-# plt.xlabel('Performance')
-# plt.title('How fast do you want to go today?')
+#### Sets up the figure
+fig, ax1 = plt.subplots(figsize=(20,15), facecolor='white')
+ax1.spines['left'].set_visible(False)
+ax1.spines['right'].set_visible(False)
+ax1.spines['bottom'].set_visible(False)
+ax1.spines['top'].set_visible(False)
+# Pushes the left border/labels out
+ax1.spines['left'].set_position(('outward', .4))
+# Set the color scheme
+colors=['#D0DD2B','#98C73D', '#00A9E0', '#67CDDC', '#3B3B3D']
 
-plt.show()
+#### Plots the horizontal bars
+rects = plt.barh(y_pos, performance, align='center', color=colors, edgecolor='none')
 
-"""
-For putting labels within the bars
-http://matplotlib.org/examples/pylab_examples/barchart_demo2.html
+#### Adds the appropriate labeling of data points
+plt.xticks([])
+plt.yticks(y_pos,performanceLabel, color='#3B3B3D', size='x-large')
+plt.tick_params(right="off")
+plt.tick_params(left="off")
 
-# Lastly, write in the ranking inside each bar to aid in interpretation
-for rect in rects:
-    # Rectangle widths are already integer-valued but are floating
-    # type, so it helps to remove the trailing decimal point and 0 by
-    # converting width to int type
-    width = int(rect.get_width())
+# Write in the courseTitle inside each bar
+for i,rect in enumerate(rects):
+    barWidth = rect.get_width()
+    barHeight = rect.get_height()
+    print 'height', barHeight
+    # print 'width', barWidth
+    # print courseTitle[i], len(courseTitle[i])
 
-    # Figure out what the last digit (width modulo 10) so we can add
-    # the appropriate numerical suffix (e.g., 1st, 2nd, 3rd, etc)
-    lastDigit = width % 10
-    # Note that 11, 12, and 13 are special cases
-    if (width == 11) or (width == 12) or (width == 13):
-        suffix = 'th'
-    else:
-        suffix = suffixes[lastDigit]
-
-    rankStr = str(width) + suffix
-    if (width < 5):        # The bars aren't wide enough to print the ranking inside
-        xloc = width + 1   # Shift the text to the right side of the right edge
-        clr = 'black'      # Black against white background
+    # If bars aren't wide enough to print the title inside
+    if barWidth < (len(courseTitle[i]) + 0.1*barWidth):
+        # Shift the text to the right side of the right edge
+        xloc = barWidth + .3
+        clr = '#3B3B3D'
         align = 'left'
     else:
-        xloc = 0.98*width  # Shift the text to the left side of the right edge
-        clr = 'white'      # White on magenta
+        # Shift the text to the left side of the right edge
+        xloc = barWidth-.3
+        clr = 'white'
         align = 'right'
 
     # Center the text vertically in the bar
     yloc = rect.get_y()+rect.get_height()/2.0
-    ax1.text(xloc, yloc, rankStr, horizontalalignment=align,
-            verticalalignment='center', color=clr, weight='bold')
-"""
+    ax1.text(xloc, yloc, courseTitle[i], horizontalalignment=align,
+             verticalalignment='center', color=clr, size='x-large')
+
+#### Saves the plot to a file name
+# plt.savefig("plot.png",bbox_inches='tight', transparent=True, edgecolor='none')
+
+plt.show()
