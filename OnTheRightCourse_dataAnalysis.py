@@ -349,7 +349,8 @@ class RenderDF(object):
 
         # Data lists for plotting        
         courseTitle = self.df['courseTitle'].tolist()
-        y_pos = np.arange(len(courseTitle))
+        y_position = np.arange(len(courseTitle))
+        y_pos = y_position[::-1]
         percentages = self.df['Percent'].tolist()
         prettyPercentages = self.addPercentSymbol(percentages)
 
@@ -361,7 +362,7 @@ class RenderDF(object):
         ax1.spines['bottom'].set_visible(False)
         ax1.spines['top'].set_visible(False)
         # Pushes the left labels away from bars
-        ax1.spines['left'].set_position(('outward', .25))
+        ax1.spines['left'].set_position(('outward', .4))
         # Set the color scheme
         colors=['#D0DD2B','#98C73D', '#00A9E0', '#67CDDC', '#3B3B3D']
 
@@ -371,7 +372,7 @@ class RenderDF(object):
 
         # Add the appropriate labeling of data points
         plt.xticks([])
-        plt.yticks(y_pos,prettyPercentages, color='#3B3B3D')
+        plt.yticks(y_pos,prettyPercentages, color='#3B3B3D', size='x-large')
         plt.tick_params(right="off")
         plt.tick_params(left="off")
 
@@ -384,22 +385,22 @@ class RenderDF(object):
             # If bars aren't wide enough to print the title inside
             if barWidth < (len(courseTitle[i]) + 0.2*barWidth):
                 # Shift the text to the right side of the right edge
-                xloc = barWidth + .25
+                xloc = barWidth + .3
                 clr = '#3B3B3D'
                 align = 'left'
             else:
                 # Shift the text to the left side of the right edge
-                xloc = barWidth-.25
+                xloc = barWidth-.3
                 clr = 'white'
                 align = 'right'
 
             # Center the text vertically in the bar
             yloc = rect.get_y()+rect.get_height()/2.0
             ax1.text(xloc, yloc, courseTitle[i], horizontalalignment=align,
-                     verticalalignment='center', color=clr)
+                     verticalalignment='center', color=clr, size='x-large')
 
         # Save plot to file
-        plt.savefig("plot.png",bbox_inches='tight', transparent=True,
+        plt.savefig("plot2.png",bbox_inches='tight', transparent=True,
                     edgecolor='none')
 
         plt.show()
@@ -415,7 +416,7 @@ if __name__ == '__main__':
     data = CourseDF(get_df(file_name))
     cleanDF = data.dataCleaning()
     # print cleanDF
-    testFilter = FilterDF(cleanDF, sem=2.5, major="Electr'l & Computer Engr")
+    testFilter = FilterDF(cleanDF, sem=4.0, major='Engineering             Computing               ')
     # print testFilter.filter()
 
     plotThis = testFilter.filter()
