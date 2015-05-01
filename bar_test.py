@@ -21,7 +21,7 @@ ax1.spines['top'].set_visible(False)
 # Pushes the left border/labels out
 ax1.spines['left'].set_position(('outward', 5))
 # Set the color scheme
-colors=['#B2AE6D','#10BFFF', '#FFF10B', '#CC0935', '#B24E65']
+colors=['#D0DD2B','#98C73D', '#00A9E0', '#67CDDC', '#3B3B3D']
 
 #### Plots the horizontal bars
 # rects = ax1.barh(pos, rankings, align='center', height=0.5, color='m')
@@ -44,27 +44,28 @@ For putting labels within the bars
 http://matplotlib.org/examples/pylab_examples/barchart_demo2.html
 """
 
-# Lastly, write in the ranking inside each bar to aid in interpretation
-
+# Write in the courseTitle inside each bar
 for i,rect in enumerate(rects):
     barWidth = rect.get_width()
-    print barWidth
+    # print 'width', barWidth
+    # print courseTitle[i], len(courseTitle[i])
 
-    print 'name length',len(courseTitle[i])
-    # The bars aren't wide enough to print the ranking inside
-    if barWidth < (len(courseTitle[i])+5):
-        xloc = barWidth + 1   # Shift the text to the right side of the right edge
-        clr = 'black'      # Black against white background
+    # If bars aren't wide enough to print the title inside
+    if barWidth < (len(courseTitle[i]) + 0.2*barWidth):
+        # Shift the text to the right side of the right edge
+        xloc = barWidth + .25
+        clr = '#3B3B3D'
         align = 'left'
     else:
-        xloc = 0.98*barWidth  # Shift the text to the left side of the right edge
+        # Shift the text to the left side of the right edge
+        xloc = barWidth-.25
         clr = 'white'
         align = 'right'
 
     # Center the text vertically in the bar
     yloc = rect.get_y()+rect.get_height()/2.0
     ax1.text(xloc, yloc, courseTitle[i], horizontalalignment=align,
-             verticalalignment='center', color=clr, weight='bold')
+             verticalalignment='center', color=clr)
 
 
 #### Saves the plot to a file name
