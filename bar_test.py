@@ -7,10 +7,24 @@ from matplotlib import cm
 import matplotlib.pyplot as plt
 
 
+def addPercentSymbol(listConvert):
+    """
+    takes a list of the percentages and returns a list of the rounded #s with
+    the percent symbol
+    """
+
+    list_percent = listConvert
+    list_percentages = []
+    for element in list_percent:
+        list_percentages.append(str(int(element))+'%')
+
+    return list_percentages
+
 #### Data
 courseTitle = ['Tom', 'Dick', 'Harry', 'Slim', 'Jimothy the III of London']
 y_pos = np.arange(len(courseTitle))
 performance = 3 + 10 * np.random.rand(len(courseTitle))
+performanceLabel = addPercentSymbol(performance)
 
 #### Sets up the figure
 fig, ax1 = plt.subplots(figsize=(5,5), facecolor='white')
@@ -19,7 +33,7 @@ ax1.spines['right'].set_visible(False)
 ax1.spines['bottom'].set_visible(False)
 ax1.spines['top'].set_visible(False)
 # Pushes the left border/labels out
-ax1.spines['left'].set_position(('outward', 5))
+ax1.spines['left'].set_position(('outward', .25))
 # Set the color scheme
 colors=['#D0DD2B','#98C73D', '#00A9E0', '#67CDDC', '#3B3B3D']
 
@@ -28,7 +42,7 @@ rects = plt.barh(y_pos, performance, align='center', color=colors, edgecolor='no
 
 #### Adds the appropriate labeling of data points
 plt.xticks([])
-plt.yticks(y_pos,performance, color='#3B3B3D')
+plt.yticks(y_pos,performanceLabel, color='#3B3B3D')
 plt.tick_params(right="off")
 plt.tick_params(left="off")
 
