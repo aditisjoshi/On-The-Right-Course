@@ -404,6 +404,12 @@ class RenderDF(object):
 
         plt.show()
 
+        """
+        TO DO FOR PLOT:
+        1. Adjust font size (make it a certain percentage of bar height)
+        2. Reverse order so longer bar is on top
+        3. Add function to make 8 plots for 8 semester scenario
+        """
 
 if __name__ == '__main__':
     data = CourseDF(get_df(file_name))
