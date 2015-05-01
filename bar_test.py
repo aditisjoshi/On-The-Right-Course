@@ -8,12 +8,12 @@ import matplotlib.pyplot as plt
 
 
 #### Data
-people = ('Tom', 'Dick', 'Harry', 'Slim', 'Jim')
-y_pos = np.arange(len(people))
-performance = 3 + 10 * np.random.rand(len(people))
+courseTitle = ['Tom', 'Dick', 'Harry', 'Slim', 'Jimothy the III of London']
+y_pos = np.arange(len(courseTitle))
+performance = 3 + 10 * np.random.rand(len(courseTitle))
 
 #### Sets up the figure
-fig, ax1 = plt.subplots(figsize=(10, 10), facecolor='white')
+fig, ax1 = plt.subplots(figsize=(5,5), facecolor='white')
 ax1.spines['left'].set_visible(False)
 ax1.spines['right'].set_visible(False)
 ax1.spines['bottom'].set_visible(False)
@@ -29,7 +29,7 @@ rects = plt.barh(y_pos, performance, align='center', color=colors, edgecolor='no
 
 #### Adds the appropriate labeling of data points
 plt.xticks([])
-plt.yticks(y_pos,people)
+plt.yticks(y_pos,performance)
 plt.tick_params(right="off")
 plt.tick_params(left="off")
 
@@ -45,30 +45,25 @@ http://matplotlib.org/examples/pylab_examples/barchart_demo2.html
 """
 
 # Lastly, write in the ranking inside each bar to aid in interpretation
-for rect in rects:
-    """
-    Rectangle widths are already integer-valued but are floating
-    type, so it helps to remove the trailing decimal point and 0 by
-    converting width to int type
-    """
-    width = int(rect.get_width())
 
-    for name in people:
-        nameLabel = name
+for i,rect in enumerate(rects):
+    barWidth = rect.get_width()
+    print barWidth
 
-    # rankStr = str(width)
-    if (width < 2):        # The bars aren't wide enough to print the ranking inside
-        xloc = width + 1   # Shift the text to the right side of the right edge
+    print 'name length',len(courseTitle[i])
+    # The bars aren't wide enough to print the ranking inside
+    if barWidth < (len(courseTitle[i])+5):
+        xloc = barWidth + 1   # Shift the text to the right side of the right edge
         clr = 'black'      # Black against white background
         align = 'left'
     else:
-        xloc = 0.98*width  # Shift the text to the left side of the right edge
+        xloc = 0.98*barWidth  # Shift the text to the left side of the right edge
         clr = 'white'
         align = 'right'
 
     # Center the text vertically in the bar
     yloc = rect.get_y()+rect.get_height()/2.0
-    ax1.text(xloc, yloc, nameLabel, horizontalalignment=align,
+    ax1.text(xloc, yloc, courseTitle[i], horizontalalignment=align,
              verticalalignment='center', color=clr, weight='bold')
 
 
