@@ -407,8 +407,6 @@ class RenderDF(object):
             for df in self.df:
         else:
 
-
-
 if __name__ == '__main__':
     data = CourseDF(get_df(file_name))
     cleanDF = data.dataCleaning()
