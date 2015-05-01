@@ -215,46 +215,30 @@ class FilterDF(object):
         """
         NEED TO MAKE SURE THE VALUES OUTPUT IN FULL DF: INCLUDES THE COURSE TITLE
         takes in the semester filtered df and outputs the top ten percentages in a df
-        1. find the number of uniqueIDs
-        2. find how many unique students are taking the course per semester (series)
-        3. convert the values of the series into percentages (still tied to courses)
-        4. sort those percentages from hight to low
-        5. cap at top ten
-        6. put series back into a df by: 
-        courses be the index
-        other columns contain: courseNum, courseTitle, section, 
         """
 
         # counts the number of students registered in specified semester
         # type: integer
         numStudents = df.ID.nunique()
-        # print 'numStudents',str(numStudents)
-
         # count the number of people (all gradYears) registered for a course
         # type: series (index is courseNum; value is number of students)
         courseFreq = df.groupby('courseTitle').ID.nunique()
         # print 'courseFreq',str(courseFreq),str(type(courseFreq))
-
         # calcs the % by dividing the number of registered students per course by total number of students
         # type: series
         percentages = (courseFreq/numStudents)*100
-        
         # sort the Series by highest to lowest percentage
         # type: series
         percentages.sort(ascending=False)
-
         # limit the list of courses to the top 10
         # type: series
         capped_percentages = percentages.head(10)
-
         # list of courses
         # type: list
         courses = capped_percentages.index.values.tolist()
-
         # list of percentages
         # type: list
         list_percent = capped_percentages.tolist()
-
         # combine them back into a dataframe
         # type: df
         capped_percents = pd.DataFrame({'courseTitle': courses, 'Percent': list_percent})
@@ -344,7 +328,7 @@ class RenderDF(object):
 
     def plot(self):
         """
-        set up the plot for matplotlib
+        set up the plot settings with matplotlib
         """
 
         # Data lists for plotting        
@@ -411,6 +395,19 @@ class RenderDF(object):
         2. Reverse order so longer bar is on top
         3. Add function to make 8 plots for 8 semester scenario
         """
+
+    def render(self):
+        """
+        Takes the input df (whether it's a list of 8 or not) saves the appropriate
+        number of figures through the plot function
+        """
+        
+        # For scenarios with 8 sem
+        if type(self.df)=list:
+            for df in self.df:
+        else:
+
+
 
 if __name__ == '__main__':
     data = CourseDF(get_df(file_name))
