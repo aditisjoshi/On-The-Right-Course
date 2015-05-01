@@ -416,7 +416,7 @@ if __name__ == '__main__':
     data = CourseDF(get_df(file_name))
     cleanDF = data.dataCleaning()
     # print cleanDF
-    testFilter = FilterDF(cleanDF, sem=4.0, major='Engineering             Computing               ')
+    testFilter = FilterDF(cleanDF, sem=4.5, major='Mechanical Engineering  ')
     # print testFilter.filter()
 
     plotThis = testFilter.filter()
