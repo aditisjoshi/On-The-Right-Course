@@ -157,6 +157,36 @@ class CourseDF(object):
 
         return self.df
 
+    def OSS(self):
+        """
+        assigns all OSS's (courseNum: ) to have "Olin Self Study" as courseTitle
+        """
+
+        for i in range(len(self.df.index)):
+            courseNumber = self.df.loc[i,'courseNum']
+            title = self.df.loc[i'courseTitle']
+            
+            if 'ENGR4198' in courseNumber:
+                title = 'Olin Self Study in Engineering'
+            elif 'AHSE4198' in courseNumber:
+                title = 'Olin Self Study in Arts, Humanities, Social Sciences'
+            elif 'AHSE4598' in courseNumber:
+                title = 'Olin Self Study in Business and Entrepreneurship'
+            elif 'SCI4198' in courseNumber:
+                title = 'Olin Self Study in Science'
+            elif 'MTH4198' in courseNumber:
+                title = 'Olin Self Study in Mathematics'
+            elif 'ISR4198' in courseNumber:
+                title = 'Olin Self Study'
+            elif 'ENGR0098' in courseNumber:
+                title = 'Independent Study in Engineering'
+            elif 'AHSE0098' in courseNumber:
+                title = 'Independent Study in Arts, Humanities, Social Sciences'
+            elif 'SCI0098' in courseNumber:
+                title = 'Independent Study in Science'
+            elif 'MTH0098' in courseNumber:
+                title = 'Independent Study in Mathematics'
+
 
     def oldCourses(self):
         """ Get rid of courses that are no longer offered from the df by
