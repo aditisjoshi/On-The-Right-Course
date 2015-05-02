@@ -389,17 +389,24 @@ class RenderDF(object):
 
         plt.show()
 
-    def render(self):
+    def render(self, semInput, majorInput):
         """
         Takes the input df (whether it's a list of 8 or not) saves the appropriate
         number of figures through the plot function
         """
+        
+        # Format file labelling
+        if majorInput is None:
+            majorInput = ''
+        if semInput is None:
+            semInput = ''
+
         encodeSem = [1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5]
         # For scenarios with 8 sem
         if isinstance(self.filterOutput, list):
         # if type(self.filterOutput)== <type 'list'>:
             for i in range(8):
-                label = encodeSem[i]+'_'+majorInput
+                label = str(encodeSem[i])+'_'+majorInput
                 self.df = self.filterOutput[i] 
                 self.plot(label)
         else:
@@ -407,8 +414,8 @@ class RenderDF(object):
             self.plot(label)
 
 if __name__ == '__main__':
-    semInput = 4.5
-    majorInput = 'Mechanical Engineering  '
+    semInput= None
+    majorInput = 'Engineering             Robotics                '
 
     data = CourseDF(get_df(file_name))
     cleanDF = data.dataCleaning()
@@ -418,4 +425,4 @@ if __name__ == '__main__':
 
     plotThis = testFilter.filter()
     final = RenderDF(plotThis)
-    final.render()
+    final.render(semInput,majorInput)
