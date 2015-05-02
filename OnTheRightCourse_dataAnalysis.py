@@ -164,14 +164,18 @@ class CourseDF(object):
         """
         # find all the unique courses
         uniqueCourse = self.df.courseNum.unique()
-        years = ['12', '13', '14', '15']
+        new_df = pd.DataFrame()
 
         for course in uniqueCourse:
             courseindex = self.df[self.df['courseNum']==course].index.tolist()
             if '14' not in self.df['academicYear'][courseindex[-1]] and '12' not in self.df['academicYear'][courseindex[-1]]:
-                print self.df['academicYear'][courseindex[-1]]
-                print courseindex[-1]
-                print self.df['courseTitle'][courseindex[-1]]
+                new_df = new_df.append(self.df.loc[courseindex])
+                # print len(self.df)
+                # new_df = self.df.drop(self.df.index[[courseindex]])
+
+
+        self.df = self.df.drop(new_df)
+        print self.df
 
 
     def AHScount(self):
@@ -221,7 +225,7 @@ class CourseDF(object):
     def dataCleaning(self):
         self.semLabel()
         self.majorAssignment()
-        #self.oldCourses()
+        self.oldCourses()
         self.AHScount()
         self.courseNames()
 
@@ -449,10 +453,10 @@ if __name__ == '__main__':
     cleanDF = data.dataCleaning()
 
     
-    testFilter = FilterDF(cleanDF, sem=semInput, major=majorInput)
+    # testFilter = FilterDF(cleanDF, sem=semInput, major=majorInput)
 
     # print testFilter.filter()
 
-    plotThis = testFilter.filter()
-    final = RenderDF(plotThis)
-    final.render(semInput,majorInput)
+    # plotThis = testFilter.filter()
+    # final = RenderDF(plotThis)
+    # final.render(semInput,majorInput)
