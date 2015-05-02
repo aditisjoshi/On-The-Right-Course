@@ -157,6 +157,37 @@ class CourseDF(object):
 
         return self.df
 
+    def OSS(self):
+        """
+        assigns all OSS's (courseNum: ) to have "Olin Self Study" as courseTitle
+        """
+
+        for i in range(len(self.df.index)):
+            courseNumber = self.df.loc[i,'courseNum']
+            title = self.df.loc[i,'courseTitle']
+            
+            if 'ENGR4198' in courseNumber:
+                title = 'Olin Self Study in Engineering'
+            elif 'AHSE4198' in courseNumber:
+                title = 'Olin Self Study in Arts, Humanities, Social Sciences'
+            elif 'AHSE4598' in courseNumber:
+                title = 'Olin Self Study in Business and Entrepreneurship'
+            elif 'SCI4198' in courseNumber:
+                title = 'Olin Self Study in Science'
+            elif 'MTH4198' in courseNumber:
+                title = 'Olin Self Study in Mathematics'
+            elif 'ISR4198' in courseNumber:
+                title = 'Olin Self Study'
+            elif 'ENGR0098' in courseNumber:
+                title = 'Independent Study in Engineering'
+            elif 'AHSE0098' in courseNumber:
+                title = 'Independent Study in Arts, Humanities, Social Sciences'
+            elif 'SCI0098' in courseNumber:
+                title = 'Independent Study in Science'
+            elif 'MTH0098' in courseNumber:
+                title = 'Independent Study in Mathematics'
+
+        return self.df
 
     def oldCourses(self):
         """ Get rid of courses that are no longer offered from the df by
@@ -221,6 +252,7 @@ class CourseDF(object):
     def dataCleaning(self):
         self.semLabel()
         self.majorAssignment()
+        self.OSS()
         self.oldCourses()
         self.AHScount()
         self.courseNames()
@@ -332,8 +364,6 @@ class FilterDF(object):
                 filteredEightDFs.append(self.capped_percent(element))
             return filteredEightDFs
 
-######################################################### IMPLEMENTING BELOW
-
 class RenderDF(object):
 
     def __init__(self, filtered):
@@ -442,15 +472,14 @@ class RenderDF(object):
             self.plot(label)
 
 if __name__ == '__main__':
+    
+    # FILTER HERE    
     semInput= None
     majorInput = 'Engineering             Robotics                '
 
     data = CourseDF(get_df(file_name))
-    cleanDF = data.dataCleaning()
-
-    
+    cleanDF = data.dataCleaning()    
     testFilter = FilterDF(cleanDF, sem=semInput, major=majorInput)
-
     # print testFilter.filter()
 
     plotThis = testFilter.filter()
