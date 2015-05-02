@@ -175,7 +175,6 @@ class CourseDF(object):
                 print self.df['courseTitle'][courseindex[-1]]
 
 
-
     def AHScount(self):
         """
         count the number of AHS classes taken in a sem by a student
