@@ -173,9 +173,10 @@ class CourseDF(object):
                 # print len(self.df)
                 # new_df = self.df.drop(self.df.index[[courseindex]])
 
+        pd.options.mode.chained_assignment = None 
         self.df = self.df[self.df.index.map(lambda x: x not in new_df.index)]
-        self.df = self.df.reindex()
-        print self.df
+        self.df = self.df.reset_index()
+        return self.df
 
 
     def AHScount(self):
@@ -227,8 +228,8 @@ class CourseDF(object):
     def dataCleaning(self):
         self.semLabel()
         self.majorAssignment()
-        self.oldCourses()
         self.AHScount()
+        self.oldCourses()
         self.courseNames()
 
         return self.df
@@ -455,10 +456,10 @@ if __name__ == '__main__':
     cleanDF = data.dataCleaning()
 
     
-    # testFilter = FilterDF(cleanDF, sem=semInput, major=majorInput)
+    testFilter = FilterDF(cleanDF, sem=semInput, major=majorInput)
 
     # print testFilter.filter()
 
-    # plotThis = testFilter.filter()
-    # final = RenderDF(plotThis)
-    # final.render(semInput,majorInput)
+    plotThis = testFilter.filter()
+    final = RenderDF(plotThis)
+    final.render(semInput,majorInput)
