@@ -10,10 +10,9 @@ based on major and/ or semester.
 """
 
 import csv
-import plotly.plotly as py
-from plotly.graph_objs import *
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Name of data file
 file_name = 'CourseEnrollmentsFA02-SP15.csv'
@@ -228,7 +227,6 @@ class CourseDF(object):
 
         return self.df
 
-
 class FilterDF(object):
     """
     end goal is to get the appropriate df from the queried order of filtering
@@ -243,46 +241,30 @@ class FilterDF(object):
         """
         NEED TO MAKE SURE THE VALUES OUTPUT IN FULL DF: INCLUDES THE COURSE TITLE
         takes in the semester filtered df and outputs the top ten percentages in a df
-        1. find the number of uniqueIDs
-        2. find how many unique students are taking the course per semester (series)
-        3. convert the values of the series into percentages (still tied to courses)
-        4. sort those percentages from hight to low
-        5. cap at top ten
-        6. put series back into a df by: 
-        courses be the index
-        other columns contain: courseNum, courseTitle, section, 
         """
 
         # counts the number of students registered in specified semester
         # type: integer
         numStudents = df.ID.nunique()
-        # print 'numStudents',str(numStudents)
-
         # count the number of people (all gradYears) registered for a course
         # type: series (index is courseNum; value is number of students)
         courseFreq = df.groupby('courseTitle').ID.nunique()
         # print 'courseFreq',str(courseFreq),str(type(courseFreq))
-
         # calcs the % by dividing the number of registered students per course by total number of students
         # type: series
         percentages = (courseFreq/numStudents)*100
-        
         # sort the Series by highest to lowest percentage
         # type: series
         percentages.sort(ascending=False)
-
         # limit the list of courses to the top 10
         # type: series
         capped_percentages = percentages.head(10)
-
         # list of courses
         # type: list
         courses = capped_percentages.index.values.tolist()
-
         # list of percentages
         # type: list
         list_percent = capped_percentages.tolist()
-
         # combine them back into a dataframe
         # type: df
         capped_percents = pd.DataFrame({'courseTitle': courses, 'Percent': list_percent})
@@ -354,54 +336,123 @@ class FilterDF(object):
 
 class RenderDF(object):
 
-    def __init__(self, df):
-        self.df = df
+    def __init__(self, filtered):
+        self.filterOutput = filtered
+        self.df = filtered
     
-    def addPercentSymbol():
+    def addPercentSymbol(self,percentList):
         """
         takes a list of the percentages and returns a list of the rounded #s with
         the percent symbol
         """
 
+        list_percent = percentList
         list_percentages = []
         for element in list_percent:
             list_percentages.append(str(int(element))+'%')
 
         return list_percentages
 
-    def df_to_list(self):
+    def plot(self,label):
         """
-        takes a dataframe and splits all the columns into separate lists
+        set up the plot settings with matplotlib
         """
 
-        df_list = []
-        header_list = list(self.df)
-        for header in header_list:
-            df_list.append(self.df[header].tolist())
+        # Data lists for plotting        
+        courseTitle = self.df['courseTitle'].tolist()
+        y_position = np.arange(len(courseTitle))
+        y_pos = y_position[::-1]
+        percentages = self.df['Percent'].tolist()
+        prettyPercentages = self.addPercentSymbol(percentages)
 
-        return df_list
+        ### Set up the figure
+        fig, ax1 = plt.subplots(figsize=(20,15), facecolor='white')
+        # No visible borders
+        ax1.spines['left'].set_visible(False)
+        ax1.spines['right'].set_visible(False)
+        ax1.spines['bottom'].set_visible(False)
+        ax1.spines['top'].set_visible(False)
+        # Pushes the left labels away from bars
+        ax1.spines['left'].set_position(('outward', .4))
+        # Set the color scheme
+        colors=['#D0DD2B','#98C73D', '#00A9E0', '#67CDDC', '#3B3B3D']
 
-    def plot(self,x,y):
+        # Plot the horizontal bars
+        rects = plt.barh(y_pos, percentages, align='center', color=colors,
+                         edgecolor='none')
+
+        # Add the appropriate labeling of data points
+        plt.xticks([])
+        plt.yticks(y_pos,prettyPercentages, color='#3B3B3D', size='x-large')
+        plt.tick_params(right="off")
+        plt.tick_params(left="off")
+
+        # Write in the courseTitle inside each bar
+        for i,rect in enumerate(rects):
+            barWidth = rect.get_width()
+            # print 'width', barWidth
+            # print courseTitle[i], len(courseTitle[i])
+
+            # If bars aren't wide enough to print the title inside
+            if barWidth < (len(courseTitle[i]) + 0.2*barWidth):
+                # Shift the text to the right side of the right edge
+                xloc = barWidth + .3
+                clr = '#3B3B3D'
+                align = 'left'
+            else:
+                # Shift the text to the left side of the right edge
+                xloc = barWidth-.3
+                clr = 'white'
+                align = 'right'
+
+            # Center the text vertically in the bar
+            yloc = rect.get_y()+rect.get_height()/2.0
+            ax1.text(xloc, yloc, courseTitle[i], horizontalalignment=align,
+                     verticalalignment='center', color=clr, size='x-large')
+
+        # Save plot to file
+        plot_name = "plot{}.png".format(label)
+        plt.savefig(plot_name,bbox_inches='tight', transparent=True,
+                    edgecolor='none')
+
+        plt.show()
+
+    def render(self, semInput, majorInput):
         """
-        set up the plot for plotly
+        Takes the input df (whether it's a list of 8 or not) saves the appropriate
+        number of figures through the plot function
         """
-        data = Data([Bar(x = x, y = y, name='Sem 4.5', orientation='h')])
+        
+        # Format file labelling
+        if majorInput is None:
+            majorInput = ''
+        if semInput is None:
+            semInput = ''
 
-        fig = Figure(data=data, layout=layout)
-        plot_url = py.plot(fig, filename='grouped-bar')
-
-    def render(self):
-        """
-        uses plotly to display the appropriate graph/ url to graph
-        """
-        for dataFrame in self.df:
-            percent_text = addPercentSymbol(dataFrame)
-            plot_this = df_to_list(dataFrame)
-            url = plot(plot_this)
-
+        encodeSem = [1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5]
+        # For scenarios with 8 sem
+        if isinstance(self.filterOutput, list):
+        # if type(self.filterOutput)== <type 'list'>:
+            for i in range(8):
+                label = str(encodeSem[i])+'_'+majorInput
+                self.df = self.filterOutput[i] 
+                self.plot(label)
+        else:
+            label = str(semInput)+'_'+majorInput
+            self.plot(label)
 
 if __name__ == '__main__':
+    semInput= None
+    majorInput = 'Engineering             Robotics                '
+
     data = CourseDF(get_df(file_name))
     cleanDF = data.dataCleaning()
-    # testFilter = FilterDF(cleanDF)
+
+    
+    testFilter = FilterDF(cleanDF, sem=semInput, major=majorInput)
+
     # print testFilter.filter()
+
+    plotThis = testFilter.filter()
+    final = RenderDF(plotThis)
+    final.render(semInput,majorInput)
