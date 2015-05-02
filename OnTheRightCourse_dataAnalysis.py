@@ -163,9 +163,18 @@ class CourseDF(object):
         """ Get rid of courses that are no longer offered from the df by
         looking at courses that are only offered in the last 4 years
         """
-        # STILL NEED TO IMPLEMENT
+        # find all the unique courses
+        uniqueCourse = self.df.courseNum.unique()
+        years = ['12', '13', '14', '15']
 
-        pass
+        for course in uniqueCourse:
+            courseindex = self.df[self.df['courseNum']==course].index.tolist()
+            if '14' not in self.df['academicYear'][courseindex[-1]] and '12' not in self.df['academicYear'][courseindex[-1]]:
+                print self.df['academicYear'][courseindex[-1]]
+                print courseindex[-1]
+                print self.df['courseTitle'][courseindex[-1]]
+
+
 
     def AHScount(self):
         """
@@ -173,17 +182,22 @@ class CourseDF(object):
         """
         # finds all the unique ids of all ids
         uniqueIDs = self.df.ID.unique()
-        count = 0
+        semesters = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5]
         
         # loop through the unique ids 
         for idNum in uniqueIDs:
+            # set the count of that person's AHS classes to 0
+            count = 0
+            # find start and end indeces for that id
             IDindex = self.df[self.df['ID']==idNum].index.tolist()
             startID = IDindex[0]
             endID = IDindex[-1]
-            for course in self.df.loc[startID:endID, 'courseNum']:
-                if 'AHSE' in course:
-                    self.df.loc[course] = 'AHSE000' + str(count)
-                    count =+ 1
+            for i, row in enumerate(self.df.loc[startID:endID].iterrows()):
+                if 'AHSE' in row[1][3] and idNum == row[1][0]:
+                    self.df['courseNum'][row[0]] = 'AHSE' + str(count)
+                    self.df['courseTitle'][row[0]] = 'AHSE class' + str(count)
+                    count += 1
+
 
 
     def courseNames(self):
@@ -209,6 +223,7 @@ class CourseDF(object):
     def dataCleaning(self):
         self.semLabel()
         self.majorAssignment()
+        self.oldCourses()
         self.AHScount()
         self.courseNames()
 
