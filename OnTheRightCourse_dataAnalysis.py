@@ -221,7 +221,7 @@ class CourseDF(object):
     def dataCleaning(self):
         self.semLabel()
         self.majorAssignment()
-        self.oldCourses()
+        #self.oldCourses()
         self.AHScount()
         self.courseNames()
 
@@ -443,7 +443,7 @@ class RenderDF(object):
 
 if __name__ == '__main__':
     semInput= None
-    majorInput = 'Engineering             Robotics                '
+    majorInput = 'Mechanical Engineering  '
 
     data = CourseDF(get_df(file_name))
     cleanDF = data.dataCleaning()
