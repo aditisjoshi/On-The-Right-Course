@@ -396,13 +396,14 @@ class RenderDF(object):
         """
         encodeSem = [1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5]
         # For scenarios with 8 sem
-        if type(self.filterOutput)=list:
+        if isinstance(self.filterOutput, list):
+        # if type(self.filterOutput)== <type 'list'>:
             for i in range(8):
-                label = encodeSem[i],'_',majorInput
+                label = encodeSem[i]+'_'+majorInput
                 self.df = self.filterOutput[i] 
                 self.plot(label)
         else:
-            label = str(semInput),'_',majorInput
+            label = str(semInput)+'_'+majorInput
             self.plot(label)
 
 if __name__ == '__main__':
@@ -417,4 +418,4 @@ if __name__ == '__main__':
 
     plotThis = testFilter.filter()
     final = RenderDF(plotThis)
-    final.plot()
+    final.render()
