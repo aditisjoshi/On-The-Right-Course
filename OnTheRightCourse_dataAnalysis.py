@@ -174,7 +174,7 @@ class CourseDF(object):
                 # new_df = self.df.drop(self.df.index[[courseindex]])
 
 
-        self.df = self.df.drop(new_df)
+        self.df = self.df[self.df.index.map(lambda x: x not in new_df.index)]
         print self.df
 
 
