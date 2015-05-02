@@ -10,8 +10,6 @@ based on major and/ or semester.
 """
 
 import csv
-# import plotly.plotly as py
-# from plotly.graph_objs import *
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -310,8 +308,9 @@ class FilterDF(object):
 
 class RenderDF(object):
 
-    def __init__(self, df):
-        self.df = df
+    def __init__(self, filtered):
+        self.filterOutput = filtered
+        self.df = filtered
     
     def addPercentSymbol(self,percentList):
         """
@@ -326,7 +325,7 @@ class RenderDF(object):
 
         return list_percentages
 
-    def plot(self):
+    def plot(self,label):
         """
         set up the plot settings with matplotlib
         """
@@ -384,34 +383,36 @@ class RenderDF(object):
                      verticalalignment='center', color=clr, size='x-large')
 
         # Save plot to file
-        plt.savefig("plot2.png",bbox_inches='tight', transparent=True,
+        plot_name = "plot{}.png".format(label)
+        plt.savefig(plot_name,bbox_inches='tight', transparent=True,
                     edgecolor='none')
 
         plt.show()
-
-        """
-        TO DO FOR PLOT:
-        1. Adjust font size (make it a certain percentage of bar height)
-        2. Reverse order so longer bar is on top
-        3. Add function to make 8 plots for 8 semester scenario
-        """
 
     def render(self):
         """
         Takes the input df (whether it's a list of 8 or not) saves the appropriate
         number of figures through the plot function
         """
-        
+        encodeSem = [1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5]
         # For scenarios with 8 sem
-        if type(self.df)=list:
-            for df in self.df:
+        if type(self.filterOutput)=list:
+            for i in range(8):
+                label = encodeSem[i],'_',majorInput
+                self.df = self.filterOutput[i] 
+                self.plot(label)
         else:
+            label = str(semInput),'_',majorInput
+            self.plot(label)
 
 if __name__ == '__main__':
+    semInput = 4.5
+    majorInput = 'Mechanical Engineering  '
+
     data = CourseDF(get_df(file_name))
     cleanDF = data.dataCleaning()
-    # print cleanDF
-    testFilter = FilterDF(cleanDF, sem=4.5, major='Mechanical Engineering  ')
+    
+    testFilter = FilterDF(cleanDF, sem=semInput, major=majorInput)
     # print testFilter.filter()
 
     plotThis = testFilter.filter()
