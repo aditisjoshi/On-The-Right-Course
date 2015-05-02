@@ -173,8 +173,8 @@ class CourseDF(object):
                 # print len(self.df)
                 # new_df = self.df.drop(self.df.index[[courseindex]])
 
-
         self.df = self.df[self.df.index.map(lambda x: x not in new_df.index)]
+        self.df = self.df.reindex()
         print self.df
 
 
@@ -199,6 +199,8 @@ class CourseDF(object):
                     self.df['courseNum'][row[0]] = 'AHSE' + str(count)
                     self.df['courseTitle'][row[0]] = 'AHSE class' + str(count)
                     count += 1
+
+        return self.df
 
 
 
