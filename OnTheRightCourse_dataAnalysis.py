@@ -195,14 +195,19 @@ class CourseDF(object):
         """
         # find all the unique courses
         uniqueCourse = self.df.courseNum.unique()
-        years = ['12', '13', '14', '15']
+        new_df = pd.DataFrame()
 
         for course in uniqueCourse:
             courseindex = self.df[self.df['courseNum']==course].index.tolist()
             if '14' not in self.df['academicYear'][courseindex[-1]] and '12' not in self.df['academicYear'][courseindex[-1]]:
-                print self.df['academicYear'][courseindex[-1]]
-                print courseindex[-1]
-                print self.df['courseTitle'][courseindex[-1]]
+                new_df = new_df.append(self.df.loc[courseindex])
+                # print len(self.df)
+                # new_df = self.df.drop(self.df.index[[courseindex]])
+
+        pd.options.mode.chained_assignment = None 
+        self.df = self.df[self.df.index.map(lambda x: x not in new_df.index)]
+        self.df = self.df.reset_index()
+        return self.df
 
 
     def AHScount(self):
@@ -226,6 +231,8 @@ class CourseDF(object):
                     self.df['courseNum'][row[0]] = 'AHSE' + str(count)
                     self.df['courseTitle'][row[0]] = 'AHSE class' + str(count)
                     count += 1
+
+        return self.df
 
 
 
@@ -253,8 +260,8 @@ class CourseDF(object):
         self.semLabel()
         self.majorAssignment()
         self.OSS()
-        self.oldCourses()
         self.AHScount()
+        self.oldCourses()
         self.courseNames()
 
         return self.df
@@ -475,7 +482,7 @@ if __name__ == '__main__':
     
     # FILTER HERE    
     semInput= None
-    majorInput = 'Engineering             Robotics                '
+    majorInput = 'Mechanical Engineering  '
 
     data = CourseDF(get_df(file_name))
     cleanDF = data.dataCleaning()    
