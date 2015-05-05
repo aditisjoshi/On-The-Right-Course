@@ -13,6 +13,7 @@ import csv
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 # Name of data file
 file_name = 'CourseEnrollmentsFA02-SP15.csv'
@@ -195,14 +196,19 @@ class CourseDF(object):
         """
         # find all the unique courses
         uniqueCourse = self.df.courseNum.unique()
-        years = ['12', '13', '14', '15']
+        new_df = pd.DataFrame()
 
         for course in uniqueCourse:
             courseindex = self.df[self.df['courseNum']==course].index.tolist()
             if '14' not in self.df['academicYear'][courseindex[-1]] and '12' not in self.df['academicYear'][courseindex[-1]]:
-                print self.df['academicYear'][courseindex[-1]]
-                print courseindex[-1]
-                print self.df['courseTitle'][courseindex[-1]]
+                new_df = new_df.append(self.df.loc[courseindex])
+                # print len(self.df)
+                # new_df = self.df.drop(self.df.index[[courseindex]])
+
+        pd.options.mode.chained_assignment = None 
+        self.df = self.df[self.df.index.map(lambda x: x not in new_df.index)]
+        self.df = self.df.reset_index()
+        return self.df
 
 
     def AHScount(self):
@@ -212,7 +218,7 @@ class CourseDF(object):
         # finds all the unique ids of all ids
         uniqueIDs = self.df.ID.unique()
         semesters = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5]
-        
+            
         # loop through the unique ids 
         for idNum in uniqueIDs:
             # set the count of that person's AHS classes to 0
@@ -226,6 +232,8 @@ class CourseDF(object):
                     self.df['courseNum'][row[0]] = 'AHSE' + str(count)
                     self.df['courseTitle'][row[0]] = 'AHSE class' + str(count)
                     count += 1
+
+        return self.df
 
 
 
@@ -253,8 +261,8 @@ class CourseDF(object):
         self.semLabel()
         self.majorAssignment()
         self.OSS()
-        self.oldCourses()
         self.AHScount()
+        self.oldCourses()
         self.courseNames()
 
         return self.df
@@ -441,11 +449,13 @@ class RenderDF(object):
                      verticalalignment='center', color=clr, size='x-large')
 
         # Save plot to file
-        plot_name = "plot{}.png".format(label)
+        path = "app/static"
+        file_name = "plot{}.png".format(label)
+        plot_name = os.path.join(path, file_name)
         plt.savefig(plot_name,bbox_inches='tight', transparent=True,
                     edgecolor='none')
 
-        plt.show()
+        # plt.show()
 
     def render(self, semInput, majorInput):
         """
@@ -453,9 +463,13 @@ class RenderDF(object):
         number of figures through the plot function
         """
         
+        # major_convert = {'Mechanical Engineering  ': 'ME', "Electr'l & Computer Engr":'ECE', 'Engineering             Computing               ': 'E:C', 'Engineering             Robotics                ': 'E:Robo', 'Engineering             Bioengineering          ': 'E:Bio', 'Engineering             Materials Science       ': 'E:MatSci', 'Engineering             Design                  ': 'E:Design', 'Engineering             Systems                 ': 'E:Systems'}
+
         # Format file labelling
         if majorInput is None:
             majorInput = ''
+        # else:
+        #     majorInput = major_convert[majorInput]
         if semInput is None:
             semInput = ''
 
@@ -471,11 +485,15 @@ class RenderDF(object):
             label = str(semInput)+'_'+majorInput
             self.plot(label)
 
+
+data = CourseDF(get_df(file_name))
+cleanDF = data.dataCleaning()  
+
 if __name__ == '__main__':
-    
+
     # FILTER HERE    
-    semInput= None
-    majorInput = 'Engineering             Robotics                '
+    semInput= 1.0
+    majorInput = 'Engineering             Systems                 '
 
     data = CourseDF(get_df(file_name))
     cleanDF = data.dataCleaning()    
