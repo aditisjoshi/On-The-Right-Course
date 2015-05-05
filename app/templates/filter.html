@@ -1,15 +1,16 @@
   
-  {% if sem %}
+  {% if sem is none %}
     <img src = " {{ image_name }} " >
 
   {% else %}
 
     {% for image in image_name %}
-        <img src = " {{ image_name }} " >  
+        {{ image }}
+        <img src = " {{ image }} " > 
     {% endfor %}
 
   {% endif %}
 
-<form action="/" method="post" id='filter_again'>
+<form action="/refilter" method="post" id='filter_again'>
     <input type='submit' value='Filter Again?'>
 </form>

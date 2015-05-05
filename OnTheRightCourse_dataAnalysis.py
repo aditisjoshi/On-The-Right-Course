@@ -485,10 +485,6 @@ class RenderDF(object):
             label = str(semInput)+'_'+majorInput
             self.plot(label)
 
-
-data = CourseDF(get_df(file_name))
-cleanDF = data.dataCleaning()  
-
 if __name__ == '__main__':
 
     # the following gets all of the graphs for all of the different cases
