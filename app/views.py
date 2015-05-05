@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, request
 from app import app
 from .forms import Inputs
-from OnTheRightCourse_dataAnalysis import *
+#   
 
 # index view function suppressed for brevity
 
@@ -19,10 +19,10 @@ def filter():
     major = major_convert[major]
     print major
     print semester  
-    testFilter = FilterDF(cleanDF, sem=semester, major=major)
-    plotThis = testFilter.filter()
-    final = RenderDF(plotThis)
-    final.render(semester,major)
+    # testFilter = FilterDF(cleanDF, sem=semester, major=major)
+    # plotThis = testFilter.filter()
+    # final = RenderDF(plotThis)
+    # final.render(semester,major)
     path = 'static/'
     if semester:
         image_name = path + 'plot' + semester + '_' + major + '.png'

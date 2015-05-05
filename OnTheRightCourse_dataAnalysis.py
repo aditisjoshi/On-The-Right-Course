@@ -491,15 +491,17 @@ cleanDF = data.dataCleaning()
 
 if __name__ == '__main__':
 
-    # FILTER HERE    
-    semInput= 1.0
-    majorInput = 'Engineering             Systems                 '
+    # the following gets all of the graphs for all of the different cases
 
     data = CourseDF(get_df(file_name))
     cleanDF = data.dataCleaning()    
-    testFilter = FilterDF(cleanDF, sem=semInput, major=majorInput)
-    # print testFilter.filter()
 
-    plotThis = testFilter.filter()
-    final = RenderDF(plotThis)
-    final.render(semInput,majorInput)
+    semesters = [1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,None]
+    majors = ['Mechanical Engineering  ', "Electr'l & Computer Engr", 'Engineering             Computing               ', 'Engineering             Robotics                ', 'Engineering             Bioengineering          ', 'Engineering             Materials Science       ', 'Engineering             Design                  ', 'Engineering             Systems                 ', None]
+    
+    for semInput in semesters:
+        for majorInput in majors:
+            testFilter = FilterDF(cleanDF, sem=semInput, major=majorInput)
+            plotThis = testFilter.filter()
+            final = RenderDF(plotThis)
+            final.render(semInput,majorInput)
