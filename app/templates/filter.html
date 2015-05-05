@@ -1,14 +1,15 @@
 
 
-  {% if sem is none %}
+  {% if sem %}
+
+      <img src = " {{ image_name }} ">
+
+  {% else %}
 
     {% for image in image_name %}
         <img src = " {{ image }} " > 
     {% endfor %}
 
-  {% else %}
-
-    <img src = " {{ image_name }} ">
 
   {% endif %}
 

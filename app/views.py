@@ -25,7 +25,9 @@ def filter():
 
     # getting the picture file names
     path = 'static/'
-    if semester is None:
+    if semester == "None":
+        semester = False
+        print semester
         image_name = []
         semesters = [1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5]
         for semester in semesters:
