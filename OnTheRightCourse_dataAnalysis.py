@@ -222,16 +222,23 @@ class CourseDF(object):
         # loop through the unique ids 
         for idNum in uniqueIDs:
             # set the count of that person's AHS classes to 0
-            count = 0
+            count = 1
             # find start and end indeces for that id
             IDindex = self.df[self.df['ID']==idNum].index.tolist()
             startID = IDindex[0]
             endID = IDindex[-1]
             for i, row in enumerate(self.df.loc[startID:endID].iterrows()):
                 if 'AHSE' in row[1][3] and idNum == row[1][0]:
-                    self.df['courseNum'][row[0]] = 'AHSE' + str(count)
                     self.df['courseTitle'][row[0]] = 'AHSE class' + str(count)
                     count += 1
+                    if count == 1:
+                        self.df['courseNum'][row[0]] = str(count) + 'st' + 'AHSE class'
+                    elif count == 2:
+                        self.df['courseNum'][row[0]] = str(count) + 'nd' + 'AHSE class'
+                    elif count == 3:
+                        self.df['courseNum'][row[0]] = str(count) + 'rd' + 'AHSE class'
+                    else:
+                        self.df['courseNum'][row[0]] = str(count) + 'th' + 'AHSE class'
 
         return self.df
 
@@ -497,12 +504,12 @@ if __name__ == '__main__':
     # final = RenderDF(plotThis)
     # final.render(1.5,'Engineering             Computing               ')
 
-    semesters = [1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,None]
-    majors = ['Mechanical Engineering  ', "Electr'l & Computer Engr", 'Engineering             Computing               ', 'Engineering             Robotics                ', 'Engineering             Bioengineering          ', 'Engineering             Materials Science       ', 'Engineering             Design                  ', 'Engineering             Systems                 ', None]
+    # semesters = [1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,None]
+    # majors = ['Mechanical Engineering  ', "Electr'l & Computer Engr", 'Engineering             Computing               ', 'Engineering             Robotics                ', 'Engineering             Bioengineering          ', 'Engineering             Materials Science       ', 'Engineering             Design                  ', 'Engineering             Systems                 ', None]
     
-    for semInput in semesters:
-        for majorInput in majors:
-            testFilter = FilterDF(cleanDF, sem=semInput, major=majorInput)
-            plotThis = testFilter.filter()
-            final = RenderDF(plotThis)
-            final.render(semInput,majorInput)
+    # for semInput in semesters:
+    #     for majorInput in majors:
+    #         testFilter = FilterDF(cleanDF, sem=semInput, major=majorInput)
+    #         plotThis = testFilter.filter()
+    #         final = RenderDF(plotThis)
+    #         final.render(semInput,majorInput)

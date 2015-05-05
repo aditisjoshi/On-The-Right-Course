@@ -16,6 +16,8 @@ def filter():
     # getting user input 
     major = (request.form['major'])
     semester = (request.form['semester'])
+    print major
+    print semester
 
     # converting the major input to what can be used in the dictionary
     major_convert = {'ME': 'Mechanical Engineering  ', 'ECE': "Electr'l & Computer Engr", 'E:C': 'Engineering             Computing               ', 'E:Robo': 'Engineering             Robotics                ', 'E:Bio': 'Engineering             Bioengineering          ', 'E:MatSci': 'Engineering             Materials Science       ', 'E:Design': 'Engineering             Design                  ', 'E:Systems': 'Engineering             Systems                 ', 'None': ''}

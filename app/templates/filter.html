@@ -1,26 +1,21 @@
-<!-- <!DOCTYPE html>
-
-<html>  
-  <head>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
-  </head> -->
 
 
   {% if sem is none %}
 
     {% for image in image_name %}
-        <img src = " {{ image }} " , class='centered'> 
+        <img src = " {{ image }} " > 
     {% endfor %}
 
   {% else %}
 
-    <img src = " {{ url_for('static', filename = 'plot1.5_Engineering             Computing               .png') }} ">
-<!--     <img src = " {{ image_name }} "> -->
+    <img src = " {{ image_name }} ">
 
   {% endif %}
+
+
+
 
 <form action="/refilter" method="post" id='filter_again'>
     <input type='submit' value='Filter Again?'>
 </form>
 
-<!-- </html> -->
