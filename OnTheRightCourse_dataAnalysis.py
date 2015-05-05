@@ -165,28 +165,28 @@ class CourseDF(object):
 
         for i in range(len(self.df.index)):
             courseNumber = self.df.loc[i,'courseNum']
-            title = self.df.loc[i,'courseTitle']
+            # title = self.df.loc[i,'courseTitle']
             
             if 'ENGR4198' in courseNumber:
-                title = 'Olin Self Study in Engineering'
+                self.df.loc[i,'courseTitle'] = 'Olin Self Study in Engineering'
             elif 'AHSE4198' in courseNumber:
-                title = 'Olin Self Study in Arts, Humanities, Social Sciences'
+                self.df.loc[i,'courseTitle'] = 'Olin Self Study in Arts, Humanities, Social Sciences'
             elif 'AHSE4598' in courseNumber:
-                title = 'Olin Self Study in Business and Entrepreneurship'
+                self.df.loc[i,'courseTitle'] = 'Olin Self Study in Business and Entrepreneurship'
             elif 'SCI4198' in courseNumber:
-                title = 'Olin Self Study in Science'
+                self.df.loc[i,'courseTitle'] = 'Olin Self Study in Science'
             elif 'MTH4198' in courseNumber:
-                title = 'Olin Self Study in Mathematics'
+                self.df.loc[i,'courseTitle'] = 'Olin Self Study in Mathematics'
             elif 'ISR4198' in courseNumber:
-                title = 'Olin Self Study'
+                self.df.loc[i,'courseTitle'] = 'Olin Self Study'
             elif 'ENGR0098' in courseNumber:
-                title = 'Independent Study in Engineering'
+                self.df.loc[i,'courseTitle'] = 'Independent Study in Engineering'
             elif 'AHSE0098' in courseNumber:
-                title = 'Independent Study in Arts, Humanities, Social Sciences'
+                self.df.loc[i,'courseTitle'] = 'Independent Study in Arts, Humanities, Social Sciences'
             elif 'SCI0098' in courseNumber:
-                title = 'Independent Study in Science'
+                self.df.loc[i,'courseTitle'] = 'Independent Study in Science'
             elif 'MTH0098' in courseNumber:
-                title = 'Independent Study in Mathematics'
+                self.df.loc[i,'courseTitle'] = 'Independent Study in Mathematics'
 
         return self.df
 
@@ -490,7 +490,12 @@ if __name__ == '__main__':
     # the following gets all of the graphs for all of the different cases
 
     data = CourseDF(get_df(file_name))
-    cleanDF = data.dataCleaning()    
+    cleanDF = data.dataCleaning() 
+
+    # testFilter = FilterDF(cleanDF, sem=1.5, major='Engineering             Computing               ')
+    # plotThis = testFilter.filter()
+    # final = RenderDF(plotThis)
+    # final.render(1.5,'Engineering             Computing               ')
 
     semesters = [1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,None]
     majors = ['Mechanical Engineering  ', "Electr'l & Computer Engr", 'Engineering             Computing               ', 'Engineering             Robotics                ', 'Engineering             Bioengineering          ', 'Engineering             Materials Science       ', 'Engineering             Design                  ', 'Engineering             Systems                 ', None]
