@@ -1,16 +1,24 @@
-  
-  {% if sem is none %}
-    <img src = " {{ image_name }} " >
+<!-- <!DOCTYPE html>
 
-  {% else %}
+<html>  
+  <head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
+  </head> -->
+
+
+  {% if sem is none %}
 
     {% for image in image_name %}
-        {{ image }}
         <img src = " {{ image }} " > 
     {% endfor %}
+
+  {% else %}
+    <img src = " {{ image_name }} ">
 
   {% endif %}
 
 <form action="/refilter" method="post" id='filter_again'>
     <input type='submit' value='Filter Again?'>
 </form>
+
+<!-- </html> -->

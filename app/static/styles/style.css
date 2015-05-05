@@ -9,3 +9,8 @@ h2 {
 #filter {
 	margin-top: -40px;
 }
+
+.centered {
+	width: 100%;
+	height: 100%;
+}
