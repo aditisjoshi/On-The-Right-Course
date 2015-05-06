@@ -32,12 +32,10 @@ def filter():
         for semester in semesters:
             image_name_next = path + 'plot' + str(semester) + '_' + major + '.png'
             image_name.append(image_name_next)
-        print image_name
+        return render_template('filter_allsem.html', sem=semester, major=major, image_name=image_name)
     else:
         image_name = path + 'plot' + semester + '_' + major + '.png'
-        print image_name
-
-    return render_template('filter.html', sem=semester, major=major, image_name=image_name)
+        return render_template('filter.html', sem=semester, major=major, image_name=image_name)
 
 
 @app.route('/refilter', methods=['POST'])
