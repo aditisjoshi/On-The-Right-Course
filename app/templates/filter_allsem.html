@@ -6,19 +6,23 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
     </head>
 
-    <ul class='images'>
+<h2 class='semlabel'>Semester 1</h2>
+<img src = " {{ image1 }} ", class='centered'>
+<h2 class='semlabel'>Semester 2</h2>
+<img src = " {{ image2 }} ", class='centered'>
+<h2 class='semlabel'>Semester 3</h2>
+<img src = " {{ image3 }} ", class='centered'>
 
-        <li><img src = " {{ image1 }} ", class='centered'></li>
-        <li><img src = " {{ image2 }} ", class='centered'></li>
-        <li><img src = " {{ image3 }} ", class='centered'></li>
-        <li><img src = " {{ image4 }} ", class='centered'></li>
-        <li><img src = " {{ image5 }} ", class='centered'></li>
-        <li><img src = " {{ image6 }} ", class='centered'></li>
-        <li><img src = " {{ image7 }} ", class='centered'></li>
-        <li><img src = " {{ image8 }} ", class='centered'></li>
-
-    </ul>
-
+<h2 class='semlabel'>Semester 4</h2>
+<img src = " {{ image4 }} ", class='centered'>
+<h2 class='semlabel'>Semester 5</h2>
+<img src = " {{ image5 }} ", class='centered'>
+<h2 class='semlabel'>Semester 6</h2>
+<img src = " {{ image6 }} ", class='centered'>
+<h2 class='semlabel'>Semester 7</h2>
+<img src = " {{ image7 }} ", class='centered'>
+<h2 class='semlabel'>Semester 8</h2>
+<img src = " {{ image8 }} ", class='centered'>
 
     <form action="/refilter" method="post" id='filter_again'>
         <input type='submit' value='Filter Again?'>

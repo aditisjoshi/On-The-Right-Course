@@ -21,8 +21,9 @@ img.centered {
     height: auto !important;
 }
 
-ul.images li {
-    list-style-type: none;
+.semlabel {
+    font-family: Georgia, serif;
+    font-size: 30px;
 }
 
 /*ul.images {
