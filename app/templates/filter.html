@@ -1,7 +1,17 @@
+<!DOCTYPE HTML>
 
-<img src = " {{ image_name }} " >
+<html>
+
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/cover.css') }}">
+    </head>
+
+    <img src = " {{ image_name }} ", class='centered'>
+
+    <form action="/refilter" method="post" id='filter_again'>
+        <input type='submit' value='Filter Again?'>
+    </form>
 
 
-<form action="/refilter" method="post" id='filter_again'>
-    <input type='submit' value='Filter Again?'>
-</form>
+</html>

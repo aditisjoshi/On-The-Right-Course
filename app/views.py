@@ -1,9 +1,7 @@
 from flask import render_template, flash, redirect, request
 from app import app
 from .forms import Inputs
-#   
 
-# index view function suppressed for brevity
 
 @app.route('/')
 def major_filtering():
@@ -26,13 +24,17 @@ def filter():
     # getting the picture file names
     path = 'static/'
     if semester == "None":
-        semester = None
-        image_name = []
         semesters = [1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5]
-        for semester in semesters:
-            image_name_next = path + 'plot' + str(semester) + '_' + major + '.png'
-            image_name.append(image_name_next)
-        return render_template('filter_allsem.html', sem=semester, major=major, image_name=image_name)
+        image1 = path + 'plot' + str(semesters[0]) + '_' + major + '.png'
+        image2 = path + 'plot' + str(semesters[1]) + '_' + major + '.png'
+        image3 = path + 'plot' + str(semesters[2]) + '_' + major + '.png'
+        image4 = path + 'plot' + str(semesters[3]) + '_' + major + '.png'
+        image5 = path + 'plot' + str(semesters[4]) + '_' + major + '.png'
+        image6 = path + 'plot' + str(semesters[5]) + '_' + major + '.png'
+        image7 = path + 'plot' + str(semesters[6]) + '_' + major + '.png'
+        image8 = path + 'plot' + str(semesters[7]) + '_' + major + '.png'
+        return render_template('filter_allsem.html', sem=semester, major=major, image1=image1, image2=image2, image3=image3, image4=image4, image5=image5, image6=image6, image7=image7, image8=image8)
+    
     else:
         image_name = path + 'plot' + semester + '_' + major + '.png'
         return render_template('filter.html', sem=semester, major=major, image_name=image_name)
