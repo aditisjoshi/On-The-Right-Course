@@ -230,7 +230,6 @@ class CourseDF(object):
             for i, row in enumerate(self.df.loc[startID:endID].iterrows()):
                 if 'AHSE' in row[1][3] and idNum == row[1][0]:
                     self.df['courseNum'][row[0]] = 'AHSE' + str(count)
-                    count += 1
                     if count == 1:
                         self.df['courseTitle'][row[0]] = str(count) + 'st AHSE class'
                     elif count == 2:
@@ -239,6 +238,7 @@ class CourseDF(object):
                         self.df['courseTitle'][row[0]] = str(count) + 'rd AHSE class'
                     else:
                         self.df['courseTitle'][row[0]] = str(count) + 'th AHSE class'
+                    count += 1
 
         return self.df
 

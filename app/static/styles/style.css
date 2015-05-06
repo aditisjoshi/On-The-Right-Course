@@ -16,8 +16,32 @@ img.centered {
     height: auto !important;
 }
 
+ul.images li {
+    list-style-type: none;
+}
 
-table { 
+/*ul.images {
+    list-style: none;
+    font-size: 0px;
+}
+
+ul.images li {
+    display: inline-block;
+    padding: 10px;
+    margin: 0 0 2.5% 2.5%;
+    font-size: 16px;
+    font-size: 1rem;
+    vertical-align: top;
+    width: 22.5%;
+}
+
+ul.images li img {
+    max-width: 100%;
+    height: auto;
+    margin: 0 0 10px;
+}
+*/
+/*table { 
     table-layout: fixed;    
     width:80%; 
 }
@@ -27,6 +51,6 @@ td {
 }
 
 td img {
-    width:25px;
-    height:auto;
-}
+    width: 100% !important;
+    height: auto !important;
+}*/

@@ -4,32 +4,39 @@
 
     <head>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/cover.css') }}">
     </head>
 
-    <table>
+    <ul class='images'>
+
+        <li><img src = " {{ image1 }} ", class='centered'></li>
+        <li><img src = " {{ image2 }} ", class='centered'></li>
+        <li><img src = " {{ image3 }} ", class='centered'></li>
+        <li><img src = " {{ image4 }} ", class='centered'></li>
+        <li><img src = " {{ image5 }} ", class='centered'></li>
+        <li><img src = " {{ image6 }} ", class='centered'></li>
+        <li><img src = " {{ image7 }} ", class='centered'></li>
+        <li><img src = " {{ image8 }} ", class='centered'></li>
+
+    </ul>
+
+<!--     <table>
         <tr>
-            <td><img src = " {{ image1 }} "></td>
-            <td><img src = " {{ image2 }} "></td>
-            <td><img src = " {{ image3 }} "></td>
-            <td><img src = " {{ image4 }} "></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
 
         <tr>
-            <td><img src = " {{ image5 }} "></td>
-            <td><img src = " {{ image6 }} "></td>
-            <td><img src = " {{ image7 }} "></td>
-            <td><img src = " {{ image8 }} "></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
 
-    </table>
+    </table> -->
 
-<!-- 
 
-    {% for image in image_name %}
-        <img src = " {{ image }} ", class='table'> 
-    {% endfor %}
- -->
 
     <form action="/refilter" method="post" id='filter_again'>
         <input type='submit' value='Filter Again?'>
