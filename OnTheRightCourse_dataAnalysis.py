@@ -416,7 +416,7 @@ class RenderDF(object):
         prettyPercentages = self.addPercentSymbol(percentages)
 
         ### Set up the figure
-        fig, ax1 = plt.subplots(figsize=(20,15), facecolor='white')
+        fig, ax1 = plt.subplots(figsize=(15,10), facecolor='white')
         # No visible borders
         ax1.spines['left'].set_visible(False)
         ax1.spines['right'].set_visible(False)
