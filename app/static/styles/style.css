@@ -10,6 +10,11 @@ h2 {
     margin-top: -40px;
 }
 
+img {
+    width: 100px;
+    height: 100px;
+}
+
 img.centered {
 /*    display: block;*/
     width: 100% !important;
